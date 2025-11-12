@@ -1,6 +1,6 @@
 #[allow(dead_code)]
 pub fn get_input() -> String {
-    include_str!("day_01/input.txt").to_string()
+    include_str!("day_01_input.txt").to_string()
 }
 
 #[allow(dead_code)]

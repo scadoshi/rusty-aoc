@@ -2,7 +2,7 @@
 pub fn part_one() {
     println!(
         "{}",
-        include_str!("day_02/input.txt")
+        include_str!("day_02_input.txt")
             .lines()
             .map(|line| {
                 line.split('x')

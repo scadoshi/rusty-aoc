@@ -135,7 +135,7 @@ impl Lights2 {
 pub fn part_one() {
     let mut lights = Lights::new();
 
-    for instruction in Instructions::new(include_str!("day_06/input.txt")).list {
+    for instruction in Instructions::new(include_str!("day_06_input.txt")).list {
         lights.toggle(instruction);
     }
 
@@ -152,7 +152,7 @@ pub fn part_one() {
 pub fn part_two() {
     let mut lights = Lights2::new();
 
-    for instruction in Instructions::new(include_str!("day_06/input.txt")).list {
+    for instruction in Instructions::new(include_str!("day_06_input.txt")).list {
         lights.toggle(instruction);
     }
 
