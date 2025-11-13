@@ -1,39 +1,7 @@
-#[allow(dead_code)]
-fn fuel_for(mass: isize, consider_added_mass: bool) -> isize {
-    if !consider_added_mass {
-        (mass / 3) - 2
-    } else {
-        recur_fuel_for(mass, 0)
-    }
-}
+pub mod get_input;
+pub mod part_01;
+pub mod part_02;
 
-#[allow(dead_code)]
-fn recur_fuel_for(mass: isize, total: isize) -> isize {
-    let result = fuel_for(mass, false);
-    if result <= 0 {
-        return total;
-    }
-    return recur_fuel_for(result, total + result);
-}
-
-#[allow(dead_code)]
-pub fn part_one() {
-    println!(
-        "{}",
-        include_str!("day_01_input.txt")
-            .lines()
-            .map(|x| fuel_for(x.parse::<isize>().unwrap(), false))
-            .sum::<isize>()
-    );
-}
-
-#[allow(dead_code)]
-pub fn part_two() {
-    println!(
-        "{}",
-        include_str!("day_01_input.txt")
-            .lines()
-            .map(|x| fuel_for(x.parse::<isize>().unwrap(), true))
-            .sum::<isize>()
-    );
-}
+pub use get_input::get_input;
+pub use part_01::part_01;
+pub use part_02::part_02;

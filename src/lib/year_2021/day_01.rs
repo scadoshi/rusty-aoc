@@ -1,30 +1,7 @@
-#[allow(dead_code)]
-pub fn part_one() {
-    println!(
-        "{:#?}",
-        include_str!("day_01_input.txt")
-            .lines()
-            .map(|x| x.parse::<i32>().unwrap())
-            .collect::<Vec<i32>>()
-            .windows(2)
-            .filter(|x| x[0] < x[1])
-            .count()
-    )
-}
+pub mod get_input;
+pub mod part_01;
+pub mod part_02;
 
-#[allow(dead_code)]
-pub fn part_two() {
-    println!(
-        "{:#?}",
-        include_str!("day_01_input.txt")
-            .lines()
-            .map(|x| x.parse::<i32>().unwrap())
-            .collect::<Vec<i32>>()
-            .windows(3)
-            .map(|x| x.into_iter().sum::<i32>())
-            .collect::<Vec<i32>>()
-            .windows(2)
-            .filter(|x| x[0] < x[1])
-            .count()
-    )
-}
+pub use get_input::get_input;
+pub use part_01::part_01;
+pub use part_02::part_02;
