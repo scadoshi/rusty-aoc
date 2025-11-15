@@ -1,6 +1,6 @@
 use regex::Regex;
 
-fn digits_regex() -> Vec<(i32, Regex)> {
+fn get_digex() -> Vec<(i32, Regex)> {
     vec![
         (0, Regex::new(".*zero.*").expect("failed to create regex")),
         (1, Regex::new(".*one.*").expect("failed to create regex")),
@@ -16,7 +16,7 @@ fn digits_regex() -> Vec<(i32, Regex)> {
 }
 
 pub fn first_num(value: &str) -> Option<i32> {
-    let digits_regex = digits_regex();
+    let digex = get_digex();
     let mut first: Option<i32> = None;
 
     // so ready to solve this bro
