@@ -15,20 +15,20 @@ fn get_digex() -> Vec<(i32, Regex)> {
     ]
 }
 
-pub fn first_num(value: &str) -> Option<i32> {
-    let digex = get_digex();
-    let mut first: Option<i32> = None;
+pub fn first_num(_value: &str) -> Option<i32> {
+    let _digex = get_digex();
+    let mut _first: Option<i32> = None;
 
     // so ready to solve this bro
     // i know it
     // lfg
     // do it right here
 
-    first
+    _first
 }
 
 pub fn last_num(_value: &str) -> Option<i32> {
-    let _digits_regex = digits_regex();
+    let _digits_regex = get_digex();
     None
 }
 
