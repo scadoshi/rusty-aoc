@@ -1,4 +1,4 @@
-use aoc::year_2023::day_01::{get_input::get_input, part_01::part_01, part_02::part_02};
+use aoc::year_2024::day_01::{get_input::get_input, part_01::part_01, part_02::part_02};
 
 fn main() {
     let input = get_input();
