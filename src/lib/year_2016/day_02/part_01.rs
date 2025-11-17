@@ -1,15 +1,15 @@
-use crate::year_2016::day_02::{direction::Direction, keypad::KeypadPoint};
+use crate::year_2016::day_02::{direction::Direction, keypad::Keypad};
 
-pub fn part_01(input: &[Vec<Direction>]) -> i32 {
+pub fn part_01(input: &[Vec<Direction>]) -> String {
     let (code, _) = input.iter().fold(
-        (String::new(), KeypadPoint::default()),
-        |(mut code, mut keypad_point), directions| {
+        (String::new(), Keypad::standard()),
+        |(mut code, mut keypad), directions| {
             for direction in directions {
-                keypad_point.traverse(direction);
+                keypad.traverse(direction);
             }
-            code.push(keypad_point.to_char());
-            (code, keypad_point)
+            code.push(keypad.char());
+            (code, keypad)
         },
     );
-    code.parse::<i32>().expect("failed to parse i32")
+    code
 }
