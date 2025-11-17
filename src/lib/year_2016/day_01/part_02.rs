@@ -1,4 +1,7 @@
-use crate::year_2016::day_01::models::{DirectionalPoint, Instruction, Point};
+use crate::year_2016::day_01::{
+    instruction::Instruction,
+    points::{DirectionalPoint, Point},
+};
 use std::collections::HashSet;
 
 #[allow(dead_code)]

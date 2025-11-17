@@ -1,4 +1,4 @@
-use crate::year_2016::day_01::models::{DirectionalPoint, Instruction};
+use crate::year_2016::day_01::{instruction::Instruction, points::DirectionalPoint};
 
 #[allow(dead_code)]
 pub fn part_01(input: &[Instruction]) -> i32 {

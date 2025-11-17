@@ -1,4 +1,4 @@
-use crate::year_2016::day_01::models::Instruction;
+use crate::year_2016::day_01::instruction::Instruction;
 
 #[allow(dead_code)]
 pub fn get_input() -> Vec<Instruction> {

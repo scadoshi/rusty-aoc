@@ -1,4 +1,6 @@
+pub mod directions;
 pub mod get_input;
-pub mod models;
+pub mod instruction;
 pub mod part_01;
 pub mod part_02;
+pub mod points;
