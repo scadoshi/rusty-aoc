@@ -1,6 +1,6 @@
 use crate::year_2016::day_01::{
     instruction::Instruction,
-    points::{DirectionalPoint, Point},
+    point::{DirectionalPoint, Point},
 };
 use std::collections::HashSet;
 
