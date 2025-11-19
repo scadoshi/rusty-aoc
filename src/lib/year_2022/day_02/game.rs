@@ -51,28 +51,19 @@ impl RawGame {
         let opponent = self.opponent.clone();
         let player = RPS::from(self.other);
         let result = player.against(&opponent);
-        Game {
-            player,
-            opponent,
-            result,
-        }
+        Game { player, result }
     }
 
     pub fn to_game_other_is_result(&self) -> Game {
         let opponent = self.opponent.clone();
         let result = GR::from(self.other);
         let player = result.against(&opponent);
-        Game {
-            player,
-            opponent,
-            result,
-        }
+        Game { player, result }
     }
 }
 
 pub struct Game {
     player: RPS,
-    opponent: RPS,
     result: GR,
 }
 

@@ -1,6 +1,8 @@
-pub fn get_input() -> Vec<i32> {
+use crate::year_2023::day_02::marble_game::Game;
+
+pub fn get_input() -> Vec<Game> {
     include_str!("input.txt")
-        .split(",")
-        .map(|x| x.parse::<i32>().expect("failed to parse i32"))
+        .lines()
+        .map(|x| Game::from(x))
         .collect()
 }
