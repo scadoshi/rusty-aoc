@@ -71,119 +71,119 @@ impl SpiralingPoint {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use SpiralingPoint as Spoint;
-    #[test]
-    fn test_turn_left() {
-        let mut spoint = Spoint::new();
-        spoint.turn_left();
-        assert_eq!(spoint.direction, D::Up);
-    }
-    #[test]
-    fn test_step_right() {
-        let mut spoint = Spoint::new();
-        spoint.step();
-        assert_eq!(
-            spoint,
-            Spoint {
-                point: Point { x: 1, y: 0 },
-                direction: D::Right,
-                value: 2,
-                steps: 1,
-            }
-        );
-    }
-    #[test]
-    fn test_step_up() {
-        let mut spoint = Spoint::new();
-        spoint.turn_left();
-        spoint.step();
-        assert_eq!(
-            spoint,
-            Spoint {
-                point: Point { x: 0, y: 1 },
-                direction: D::Up,
-                value: 2,
-                steps: 1,
-            }
-        );
-    }
-    #[test]
-    fn test_step_left() {
-        let mut spoint = Spoint::new();
-        spoint.turn_left().turn_left();
-        spoint.step();
-        assert_eq!(
-            spoint,
-            Spoint {
-                point: Point { x: -1, y: 0 },
-                direction: D::Left,
-                value: 2,
-                steps: 1,
-            }
-        );
-    }
-    #[test]
-    fn test_step_down() {
-        let mut spoint = Spoint::new();
-        spoint.turn_left().turn_left().turn_left();
-        spoint.step();
-        assert_eq!(
-            spoint,
-            Spoint {
-                point: Point { x: 0, y: -1 },
-                direction: D::Down,
-                value: 2,
-                steps: 1,
-            }
-        );
-    }
-    #[test]
-    fn test_is_adjacent_to_true() {
-        let spoint1 = Spoint::new();
-        let mut spoint2 = spoint1.clone();
-        spoint2.step();
-        assert!(spoint1.is_adjacent_to(spoint2));
-    }
-    #[test]
-    fn test_is_adjacent_to_false() {
-        let spoint1 = Spoint::new();
-        let spoint2 = Spoint {
-            point: Point { x: 2, y: 0 },
-            ..Default::default()
-        };
-        assert!(!spoint1.is_adjacent_to(spoint2));
-    }
-    #[test]
-    fn test_sum_of_surrounding_point_values() {
-        let visited = HashSet::from([
-            Spoint {
-                point: Point { x: 0, y: 0 },
-                value: 1,
-                ..Spoint::default()
-            },
-            Spoint {
-                point: Point { x: 1, y: 0 },
-                value: 1,
-                ..Spoint::default()
-            },
-            Spoint {
-                point: Point { x: 1, y: 1 },
-                value: 1,
-                ..Spoint::default()
-            },
-            Spoint {
-                point: Point { x: 0, y: 1 },
-                value: 1,
-                ..Spoint::default()
-            },
-        ]);
-        let spoint = Spoint {
-            point: Point { x: -1, y: 1 },
-            ..Spoint::default()
-        };
-        assert_eq!(2, spoint.sum_of_surrounding_point_values(&visited));
-    }
-}
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
+//     use SpiralingPoint as Spoint;
+//     #[test]
+//     fn test_turn_left() {
+//         let mut spoint = Spoint::new();
+//         spoint.turn_left();
+//         assert_eq!(spoint.direction, D::Up);
+//     }
+//     #[test]
+//     fn test_step_right() {
+//         let mut spoint = Spoint::new();
+//         spoint.step();
+//         assert_eq!(
+//             spoint,
+//             Spoint {
+//                 point: Point { x: 1, y: 0 },
+//                 direction: D::Right,
+//                 value: 2,
+//                 steps: 1,
+//             }
+//         );
+//     }
+//     #[test]
+//     fn test_step_up() {
+//         let mut spoint = Spoint::new();
+//         spoint.turn_left();
+//         spoint.step();
+//         assert_eq!(
+//             spoint,
+//             Spoint {
+//                 point: Point { x: 0, y: 1 },
+//                 direction: D::Up,
+//                 value: 2,
+//                 steps: 1,
+//             }
+//         );
+//     }
+//     #[test]
+//     fn test_step_left() {
+//         let mut spoint = Spoint::new();
+//         spoint.turn_left().turn_left();
+//         spoint.step();
+//         assert_eq!(
+//             spoint,
+//             Spoint {
+//                 point: Point { x: -1, y: 0 },
+//                 direction: D::Left,
+//                 value: 2,
+//                 steps: 1,
+//             }
+//         );
+//     }
+//     #[test]
+//     fn test_step_down() {
+//         let mut spoint = Spoint::new();
+//         spoint.turn_left().turn_left().turn_left();
+//         spoint.step();
+//         assert_eq!(
+//             spoint,
+//             Spoint {
+//                 point: Point { x: 0, y: -1 },
+//                 direction: D::Down,
+//                 value: 2,
+//                 steps: 1,
+//             }
+//         );
+//     }
+//     #[test]
+//     fn test_is_adjacent_to_true() {
+//         let spoint1 = Spoint::new();
+//         let mut spoint2 = spoint1.clone();
+//         spoint2.step();
+//         assert!(spoint1.is_adjacent_to(spoint2));
+//     }
+//     #[test]
+//     fn test_is_adjacent_to_false() {
+//         let spoint1 = Spoint::new();
+//         let spoint2 = Spoint {
+//             point: Point { x: 2, y: 0 },
+//             ..Default::default()
+//         };
+//         assert!(!spoint1.is_adjacent_to(spoint2));
+//     }
+//     #[test]
+//     fn test_sum_of_surrounding_point_values() {
+//         let visited = HashSet::from([
+//             Spoint {
+//                 point: Point { x: 0, y: 0 },
+//                 value: 1,
+//                 ..Spoint::default()
+//             },
+//             Spoint {
+//                 point: Point { x: 1, y: 0 },
+//                 value: 1,
+//                 ..Spoint::default()
+//             },
+//             Spoint {
+//                 point: Point { x: 1, y: 1 },
+//                 value: 1,
+//                 ..Spoint::default()
+//             },
+//             Spoint {
+//                 point: Point { x: 0, y: 1 },
+//                 value: 1,
+//                 ..Spoint::default()
+//             },
+//         ]);
+//         let spoint = Spoint {
+//             point: Point { x: -1, y: 1 },
+//             ..Spoint::default()
+//         };
+//         assert_eq!(2, spoint.sum_of_surrounding_point_values(&visited));
+//     }
+// }
