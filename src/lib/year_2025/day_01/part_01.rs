@@ -1,15 +1,15 @@
 #[allow(dead_code)]
-pub fn part_01(input: &[i32]) -> i32 {
+pub fn part_01(input: &[isize]) -> isize {
     let mut p = 50;
-    let mut total = 0;
+    let mut t = 0;
     for num in input {
         p = (p + num) % 100;
         if p < 0 {
             p += 100;
         }
         if p == 0 {
-            total += 1;
+            t += 1;
         }
     }
-    total
+    t
 }
