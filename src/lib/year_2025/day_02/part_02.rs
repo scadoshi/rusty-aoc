@@ -1,25 +1,15 @@
-use std::{collections::HashSet, ops::RangeInclusive};
+use std::ops::RangeInclusive;
 
 pub fn part_02(input: &[RangeInclusive<usize>]) -> usize {
-    let mut invalid_cache = HashSet::<usize>::new();
     let mut total = 0;
     for range in input {
         'ids: for id in range.clone() {
-            if invalid_cache.contains(&id) {
-                total += id;
-                continue;
-            }
-            for chunk_size in 1..=id.to_string().len() / 2 {
-                let chunks: Vec<String> = id
-                    .to_string()
-                    .chars()
-                    .collect::<Vec<char>>()
-                    .chunks(chunk_size)
-                    .map(|chunk| chunk.iter().collect())
-                    .collect();
-                if chunks.iter().all(|chunk| *chunk == chunks[0]) {
+            let id_str = id.to_string();
+            let bytes = id_str.as_bytes();
+            for i in 1..=id.to_string().len() / 2 {
+                let first = &bytes[..i];
+                if bytes.chunks(i).all(|chunk| chunk == first) {
                     total += id;
-                    invalid_cache.insert(id);
                     continue 'ids;
                 }
             }
