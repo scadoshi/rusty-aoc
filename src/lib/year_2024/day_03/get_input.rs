@@ -1,3 +1,3 @@
-pub fn get_input() -> String {
-    include_str!("input.txt").to_string()
+pub fn get_input() -> Vec<char> {
+    include_str!("input.txt").chars().collect()
 }
