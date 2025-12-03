@@ -22,3 +22,10 @@ where
         println!("\n---");
     }
 }
+
+pub fn funbox<I, R, F>(name: &str, fun: F) -> (String, Box<dyn Fn(I) -> R>)
+where
+    F: Fn(I) -> R + 'static,
+{
+    (name.to_string(), Box::new(fun))
+}
