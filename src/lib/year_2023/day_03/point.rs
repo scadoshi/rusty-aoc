@@ -1,14 +1,10 @@
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Point {
     pub row: usize,
     pub col: usize,
 }
 
 impl Point {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
     pub fn adjacent_points(&self) -> Vec<Point> {
         let mut points = Vec::<Point>::new();
         for dr in -1_isize..=1 {

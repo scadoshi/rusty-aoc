@@ -4,7 +4,6 @@ pub type Grid = Vec<Vec<char>>;
 
 pub trait GridOperations {
     fn to_points(&self) -> Vec<Point>;
-    fn contains_point(&self, point: Point) -> bool;
     fn value_at_point(&self, point: Point) -> Option<char>;
 }
 
@@ -18,13 +17,6 @@ impl GridOperations for Grid {
             })
             .flatten()
             .collect()
-    }
-
-    fn contains_point(&self, point: Point) -> bool {
-        let Some(row) = self.get(point.row) else {
-            return false;
-        };
-        row.get(point.col).is_some()
     }
 
     fn value_at_point(&self, point: Point) -> Option<char> {

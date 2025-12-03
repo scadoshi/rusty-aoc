@@ -29,7 +29,7 @@ pub struct SpiralingPoint {
 impl Default for SpiralingPoint {
     fn default() -> Self {
         Self {
-            point: Point::default(),
+            point: Point::new(),
             direction: D::default(),
             value: 1,
             steps: 1,
