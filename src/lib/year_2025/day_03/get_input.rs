@@ -4,7 +4,7 @@ pub fn get_input() -> Vec<Vec<u8>> {
         .map(|line| {
             line.chars()
                 .map(|c| c.to_digit(10).unwrap() as u8)
-                .collect()
+                .collect::<Vec<u8>>()
         })
         .collect()
 }
