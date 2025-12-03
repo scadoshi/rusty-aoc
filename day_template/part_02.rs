@@ -1,3 +1,3 @@
-pub fn part_02(input: &usize) -> usize {
-    *input
+pub fn part_02(input: &usize) -> () {
+    let _ = input;
 }
