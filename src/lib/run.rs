@@ -13,12 +13,12 @@ where
     R: Debug,
 {
     fn run(self, input: I) {
-        println!("\n# Results");
+        println!("---\n\n# Results");
         self.into_iter().for_each(|(name, fun)| {
             let start = Instant::now();
             let result = fun(input.clone());
             println!(" - {}: {:?} | runtime: {:?}", name, result, start.elapsed());
         });
-        println!("");
+        println!("\n---");
     }
 }
