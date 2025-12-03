@@ -1,16 +1,16 @@
-use std::time::Instant;
+use std::{fmt::Debug, time::Instant};
 
 pub trait Run<I, R> {
     fn run(self, input: I)
     where
         I: Clone,
-        R: std::fmt::Debug;
+        R: Debug;
 }
 
 impl<I, R> Run<I, R> for Vec<(String, Box<dyn Fn(I) -> R>)>
 where
     I: Clone,
-    R: std::fmt::Debug,
+    R: Debug,
 {
     fn run(self, input: I) {
         println!("\n# Results");
