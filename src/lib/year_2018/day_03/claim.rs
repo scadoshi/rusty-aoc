@@ -10,7 +10,7 @@ pub struct Claim {
 impl Claim {
     pub fn to_points(&self) -> Vec<Point> {
         (0..self.dimensions.height)
-            .map(|row| {
+            .flat_map(|row| {
                 (0..self.dimensions.width)
                     .map(|col| Point {
                         row: row + self.top_left_corner.row,
@@ -18,7 +18,6 @@ impl Claim {
                     })
                     .collect::<Vec<Point>>()
             })
-            .flatten()
             .collect()
     }
 
@@ -32,7 +31,7 @@ impl Claim {
 impl From<&str> for Claim {
     fn from(value: &str) -> Self {
         // e.g. #1 @ 55,885: 22x10
-        let mut parts = value.trim().split_whitespace();
+        let mut parts = value.split_whitespace();
         let id: usize = parts.next().unwrap().replace("#", "").parse().unwrap();
         let _ = parts.next();
         let top_left_corner = Point::from(parts.next().unwrap().replace(":", "").as_str());

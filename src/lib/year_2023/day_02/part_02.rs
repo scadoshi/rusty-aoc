@@ -13,6 +13,6 @@ pub fn part_02(input: &[Game]) -> i32 {
                 map
             })
         })
-        .map(|m| m.into_iter().map(|(_, v)| v as i32).product::<i32>())
+        .map(|m| m.into_values().map(|v| v as i32).product::<i32>())
         .sum()
 }

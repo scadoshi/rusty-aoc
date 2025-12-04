@@ -2,7 +2,7 @@ use std::ops::RangeInclusive;
 
 pub fn part_01(input: &[RangeInclusive<usize>]) -> usize {
     input
-        .into_iter()
+        .iter()
         .map(|range| {
             range
                 .clone()

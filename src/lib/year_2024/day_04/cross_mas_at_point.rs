@@ -24,7 +24,7 @@ impl CrossMasAtPoint for Grid {
         let Some(value) = self.value_at_point(point) else {
             return false;
         };
-        if value.to_ascii_lowercase() != 'a' {
+        if !value.eq_ignore_ascii_case(&'a') {
             return false;
         }
         for ((dr1, dc1), (dr2, dc2)) in [moves::FORWARD_SLASH, moves::BACK_SLASH] {

@@ -64,7 +64,7 @@ impl SpiralingPoint {
     #[allow(dead_code)]
     pub fn sum_of_surrounding_point_values(&self, visited: &HashSet<SpiralingPoint>) -> usize {
         visited
-            .into_iter()
+            .iter()
             .filter(|other| self.is_adjacent_to(**other))
             .map(|other| other.value)
             .sum()

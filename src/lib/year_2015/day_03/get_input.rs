@@ -4,6 +4,6 @@ pub fn get_input() -> Vec<Direction> {
     include_str!("input.txt")
         .chars()
         .filter(|c| !c.is_whitespace())
-        .map(|c| Direction::from(c))
+        .map(Direction::from)
         .collect()
 }

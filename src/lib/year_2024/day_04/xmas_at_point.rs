@@ -25,7 +25,7 @@ impl XmasAtPoint for Grid {
         let Some(value) = self.value_at_point(point) else {
             return 0;
         };
-        if value.to_ascii_lowercase() != 'x' {
+        if !value.eq_ignore_ascii_case(&'x') {
             return 0;
         }
         let mut total = 0;

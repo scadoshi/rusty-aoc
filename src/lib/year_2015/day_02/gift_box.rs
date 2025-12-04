@@ -27,7 +27,7 @@ impl GiftBox {
     }
 
     pub fn ribbon_required(&self) -> i32 {
-        let mut sides = vec![self.height, self.width, self.length];
+        let mut sides = [self.height, self.width, self.length];
         sides.sort();
         sides[0] * 2 + sides[1] * 2 + self.volume()
     }

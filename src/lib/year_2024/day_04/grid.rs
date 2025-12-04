@@ -10,12 +10,11 @@ pub trait GridOperations {
 impl GridOperations for Grid {
     fn to_points(&self) -> Vec<Point> {
         (0..self.len())
-            .map(|row| {
+            .flat_map(|row| {
                 (0..self[row].len())
                     .map(|col| Point { row, col })
                     .collect::<Vec<Point>>()
             })
-            .flatten()
             .collect()
     }
 

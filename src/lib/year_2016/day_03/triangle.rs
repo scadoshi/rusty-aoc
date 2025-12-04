@@ -15,7 +15,7 @@ pub struct Triangle(pub u32, pub u32, pub u32);
 impl TryFrom<&[u32]> for Triangle {
     type Error = InvalidTriangle;
     fn try_from(value: &[u32]) -> Result<Self, Self::Error> {
-        if value.into_iter().count() != 3 {
+        if value.len() != 3 {
             return Err(InvalidTriangle::SideCount);
         }
         Ok(Triangle(value[0], value[1], value[2]))
@@ -36,7 +36,7 @@ impl TryFrom<&str> for Triangle {
 
 impl Triangle {
     pub fn is_valid(&self) -> bool {
-        let mut sides = vec![self.0, self.1, self.2];
+        let mut sides = [self.0, self.1, self.2];
         sides.sort();
         sides[0] + sides[1] > sides[2]
     }

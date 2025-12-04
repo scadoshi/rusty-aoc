@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 pub fn part_01(input: &[Claim]) -> usize {
     input
-        .into_iter()
+        .iter()
         .fold(HashMap::<Point, usize>::new(), |mut map, claim| {
             claim.to_points().iter().for_each(|point| {
                 *map.entry(*point).or_default() += 1;

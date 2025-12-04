@@ -9,11 +9,10 @@ impl CollisionsAtSlope for &[Vec<char>] {
         let mut point = Point::new();
         let mut total = 0;
         while point.row < self.len() {
-            if let Some(value) = self.value_at_point(point) {
-                if value == '#' {
+            if let Some(value) = self.value_at_point(point)
+                && value == '#' {
                     total += 1;
                 }
-            }
             point.row += row_change_per_step;
             point.col = (point.col + col_change_per_step) % self[0].len();
         }

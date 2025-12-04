@@ -3,7 +3,7 @@ use crate::year_2025::day_01::DIAL_SIZE;
 #[allow(dead_code)]
 pub fn part_02(input: &[isize]) -> isize {
     input
-        .into_iter()
+        .iter()
         .fold((50, 0), |(mut p, mut t), num| {
             for _ in 0..num.abs() {
                 p = (p + num.signum() + DIAL_SIZE) % DIAL_SIZE;

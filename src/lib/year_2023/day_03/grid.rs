@@ -13,12 +13,11 @@ pub trait GridOperations {
 impl GridOperations for Grid {
     fn points(&self) -> Vec<Point> {
         (0..self.len())
-            .map(|row| {
+            .flat_map(|row| {
                 (0..self[0].len())
                     .map(|col| Point { row, col })
                     .collect::<Vec<Point>>()
             })
-            .flatten()
             .collect()
     }
 
@@ -56,7 +55,7 @@ impl GridOperations for Grid {
             col: col_start,
         };
         let value: usize = row[col_start..=col_end]
-            .into_iter()
+            .iter()
             .collect::<String>()
             .parse()
             .unwrap();

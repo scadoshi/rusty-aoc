@@ -1,15 +1,11 @@
 use crate::year_2021::day_02::movement::{Direction as D, Movement};
 
+#[derive(Default)]
 pub struct Point {
     x: i32,
     y: i32,
 }
 
-impl Default for Point {
-    fn default() -> Self {
-        Point { x: 0, y: 0 }
-    }
-}
 
 impl Point {
     pub fn up(&mut self, distance: i32) {
@@ -41,19 +37,12 @@ impl Point {
     }
 }
 
+#[derive(Default)]
 pub struct AimedPoint {
     pub point: Point,
     pub aim: i32,
 }
 
-impl Default for AimedPoint {
-    fn default() -> Self {
-        Self {
-            point: Point::default(),
-            aim: 0,
-        }
-    }
-}
 
 impl AimedPoint {
     pub fn new() -> Self {

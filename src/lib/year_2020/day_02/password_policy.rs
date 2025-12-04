@@ -7,37 +7,19 @@ pub struct Policy {
 impl Policy {
     fn password_meets_range_requirements(&self, password: &str) -> bool {
         let count: usize = password.chars().filter(|c| *c == self.character).count();
-        if count < self.value1 || count > self.value2 {
-            false
-        } else {
-            true
-        }
+        !(count < self.value1 || count > self.value2)
     }
 
     fn password_meets_position_requirements(&self, password: &str) -> bool {
         let position1 = self.value1 - 1;
         let position2 = self.value2 - 1;
 
-        let char1 = password.chars().nth(position1).expect(
-            format!(
-                "failed to get char at position1: {} for password: {}",
-                position1, password
-            )
-            .as_str(),
-        );
-        let char2 = password.chars().nth(position2).expect(
-            format!(
-                "failed to get char at position2: {} for password: {}",
-                position2, password
-            )
-            .as_str(),
-        );
+        let char1 = password.chars().nth(position1).unwrap_or_else(|| panic!("failed to get char at position1: {} for password: {}",
+                position1, password));
+        let char2 = password.chars().nth(position2).unwrap_or_else(|| panic!("failed to get char at position2: {} for password: {}",
+                position2, password));
 
-        if char1 != char2 && (char1 == self.character || char2 == self.character) {
-            true
-        } else {
-            false
-        }
+        char1 != char2 && (char1 == self.character || char2 == self.character)
     }
 }
 
@@ -53,38 +35,28 @@ impl From<&str> for PasswordAndPolicy {
         let mut parts = value.split_whitespace();
         let (value1_str, value2_str) = parts
             .next()
-            .expect(format!("failed to get range string from {}", value).as_str())
+            .unwrap_or_else(|| panic!("failed to get range string from {}", value))
             .split_once("-")
-            .expect(
-                format!(
-                    "failed to split on hyphen to get value1_str and value2_str of {}",
-                    value
-                )
-                .as_str(),
-            );
+            .unwrap_or_else(|| panic!("failed to split on hyphen to get value1_str and value2_str of {}",
+                    value));
         let (value1, value2) = (
             value1_str
                 .parse::<usize>()
-                .expect(format!("failed to parse usize for value1 for {}", value).as_str()),
+                .unwrap_or_else(|_| panic!("failed to parse usize for value1 for {}", value)),
             value2_str
                 .parse::<usize>()
-                .expect(format!("failed to parse usize for value2 for {}", value).as_str()),
+                .unwrap_or_else(|_| panic!("failed to parse usize for value2 for {}", value)),
         );
         let character = parts
             .next()
-            .expect(format!("failed to get character string from {}", value).as_str())
+            .unwrap_or_else(|| panic!("failed to get character string from {}", value))
             .chars()
             .next()
-            .expect(
-                format!(
-                    "failed to get first char from character string from {}",
-                    value
-                )
-                .as_str(),
-            );
+            .unwrap_or_else(|| panic!("failed to get first char from character string from {}",
+                    value));
         let password = parts
             .next()
-            .expect(format!("failed to get password string from {}", value).as_str())
+            .unwrap_or_else(|| panic!("failed to get password string from {}", value))
             .to_string();
         Self {
             password,
