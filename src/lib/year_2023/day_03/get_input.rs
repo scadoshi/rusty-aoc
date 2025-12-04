@@ -1,6 +1,6 @@
-use crate::year_2023::day_03::grid::Grid;
+use crate::common::grid::Grid;
 
-pub fn get_input() -> Grid {
+pub fn get_input() -> Grid<char> {
     include_str!("input.txt")
         .lines()
         .map(|x| x.chars().collect())

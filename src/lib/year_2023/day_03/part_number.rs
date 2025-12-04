@@ -1,4 +1,4 @@
-use crate::year_2023::day_03::point::Point;
+use crate::common::grid::Point;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct PartNumber {

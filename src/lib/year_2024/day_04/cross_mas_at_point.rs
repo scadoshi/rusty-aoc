@@ -1,7 +1,4 @@
-use crate::year_2024::day_04::{
-    grid::{Grid, GridOperations},
-    point::Point,
-};
+use crate::common::grid::{Grid, GridOps, Point};
 
 mod moves {
     pub const FORWARD_SLASH: ((isize, isize), (isize, isize)) = (
@@ -19,9 +16,9 @@ pub trait CrossMasAtPoint {
     fn cross_mas_at_point(&self, point: Point) -> bool;
 }
 
-impl CrossMasAtPoint for Grid {
+impl CrossMasAtPoint for Grid<char> {
     fn cross_mas_at_point(&self, point: Point) -> bool {
-        let Some(value) = self.value_at_point(point) else {
+        let Some(value) = self.get_value_at_point(point) else {
             return false;
         };
         if !value.eq_ignore_ascii_case(&'a') {
@@ -51,7 +48,7 @@ impl CrossMasAtPoint for Grid {
                 },
             );
             let (Some(value1), Some(value2)) =
-                (self.value_at_point(new1), self.value_at_point(new2))
+                (self.get_value_at_point(new1), self.get_value_at_point(new2))
             else {
                 return false;
             };

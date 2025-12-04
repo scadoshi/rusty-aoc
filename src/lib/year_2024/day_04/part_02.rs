@@ -1,9 +1,9 @@
-use crate::year_2024::day_04::{
-    cross_mas_at_point::CrossMasAtPoint,
-    grid::{Grid, GridOperations},
+use crate::{
+    common::grid::{Grid, GridOps},
+    year_2024::day_04::cross_mas_at_point::CrossMasAtPoint,
 };
 
-pub fn part_02(input: &Grid) -> usize {
+pub fn part_02(input: &Grid<char>) -> usize {
     input
         .to_points()
         .into_iter()

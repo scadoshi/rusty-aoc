@@ -1,4 +1,3 @@
-mod direction;
 pub mod get_input;
 mod instruction;
 pub mod part_01;

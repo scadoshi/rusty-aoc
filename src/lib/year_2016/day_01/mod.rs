@@ -1,9 +1,9 @@
-mod directions;
+mod directional_point;
 pub mod get_input;
 mod instruction;
 pub mod part_01;
 pub mod part_02;
-mod point;
+mod turn;
 
 pub use get_input::get_input;
 pub use part_01::part_01;

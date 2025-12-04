@@ -1,33 +1,15 @@
-use crate::year_2023::day_03::{part_number::PartNumber, point::Point};
+use crate::{
+    common::grid::{Grid, GridOps, Point},
+    year_2023::day_03::part_number::PartNumber,
+};
 use std::collections::HashSet;
 
-pub type Grid = Vec<Vec<char>>;
-
-pub trait GridOperations {
-    fn points(&self) -> Vec<Point>;
-    fn get_value_at_point(&self, point: Point) -> Option<char>;
+pub trait GridOpsExt {
     fn get_part_number_at_point(&self, point: Point) -> Option<PartNumber>;
     fn get_gear_ratio_at_point(&self, point: Point) -> Option<usize>;
 }
 
-impl GridOperations for Grid {
-    fn points(&self) -> Vec<Point> {
-        (0..self.len())
-            .flat_map(|row| {
-                (0..self[0].len())
-                    .map(|col| Point { row, col })
-                    .collect::<Vec<Point>>()
-            })
-            .collect()
-    }
-
-    fn get_value_at_point(&self, point: Point) -> Option<char> {
-        let Some(row) = self.get(point.row) else {
-            return None;
-        };
-        row.get(point.col).copied()
-    }
-
+impl GridOpsExt for Grid<char> {
     fn get_part_number_at_point(&self, point: Point) -> Option<PartNumber> {
         let Some(value) = self.get_value_at_point(point) else {
             return None;

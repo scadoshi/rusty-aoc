@@ -1,4 +1,4 @@
-use crate::year_2015::day_03::{direction::Direction, point::Point};
+use crate::common::{cartesian_point::Point, direction::Direction};
 use std::collections::HashSet;
 
 pub fn part_02(input: &[Direction]) -> usize {
@@ -6,17 +6,13 @@ pub fn part_02(input: &[Direction]) -> usize {
         .iter()
         .enumerate()
         .fold(
-            (
-                HashSet::from([Point::origin()]),
-                Point::origin(),
-                Point::origin(),
-            ),
+            (HashSet::from([Point::new()]), Point::new(), Point::new()),
             |(mut visited, mut santa, mut robo_santa), (i, direction)| {
                 if i % 2 == 0 {
-                    robo_santa.traverse(*direction);
+                    robo_santa.step(*direction);
                     visited.insert(robo_santa);
                 } else {
-                    santa.traverse(*direction);
+                    santa.step(*direction);
                     visited.insert(santa);
                 }
                 (visited, santa, robo_santa)

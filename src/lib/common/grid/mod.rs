@@ -1,24 +1,25 @@
-use crate::year_2024::day_04::point::Point;
+pub mod point;
+pub use point::{Point, Points};
 
-pub type Grid = Vec<Vec<char>>;
+pub type Grid<T> = Vec<Vec<T>>;
 
-pub trait GridOperations {
-    fn to_points(&self) -> Vec<Point>;
-    fn value_at_point(&self, point: Point) -> Option<char>;
+pub trait GridOps<T> {
+    fn to_points(&self) -> Points;
+    fn get_value_at_point(&self, point: Point) -> Option<T>;
 }
 
-impl GridOperations for Grid {
+impl<T: Clone> GridOps<T> for Grid<T> {
     fn to_points(&self) -> Vec<Point> {
         (0..self.len())
             .flat_map(|row| {
-                (0..self[row].len())
+                (0..self.get(row).unwrap().len())
                     .map(|col| Point { row, col })
                     .collect::<Vec<Point>>()
             })
             .collect()
     }
 
-    fn value_at_point(&self, point: Point) -> Option<char> {
+    fn get_value_at_point(&self, point: Point) -> Option<T> {
         let Some(row) = self.get(point.row) else {
             return None;
         };

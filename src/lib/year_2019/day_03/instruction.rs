@@ -1,6 +1,6 @@
-use crate::year_2019::day_03::{
-    direction::Direction,
-    point::{Point, PointWithSteps},
+use crate::{
+    common::{cartesian_point::Point, direction::Direction},
+    year_2019::day_03::point::PointWithSteps,
 };
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]

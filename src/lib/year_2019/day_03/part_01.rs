@@ -1,6 +1,6 @@
-use crate::year_2019::day_03::{
-    instruction::{ToWire, WireInstruction},
-    point::Point,
+use crate::{
+    common::cartesian_point::Point,
+    year_2019::day_03::instruction::{ToWire, WireInstruction},
 };
 use std::collections::HashSet;
 

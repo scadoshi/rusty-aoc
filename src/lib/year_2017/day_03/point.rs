@@ -1,27 +1,10 @@
+use crate::common::{cartesian_point::Point, direction::Direction};
 use std::collections::HashSet;
-
-use crate::year_2017::day_03::direction::Direction as D;
-
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash)]
-pub struct Point {
-    pub x: i32,
-    pub y: i32,
-}
-
-impl Point {
-    pub fn new() -> Self {
-        Self::default()
-    }
-
-    pub fn distance_from_origin(&self) -> usize {
-        usize::try_from((self.x).abs() + (self.y).abs()).unwrap()
-    }
-}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct SpiralingPoint {
     pub point: Point,
-    pub direction: D,
+    pub direction: Direction,
     pub value: usize,
     pub steps: usize,
 }
@@ -30,7 +13,7 @@ impl Default for SpiralingPoint {
     fn default() -> Self {
         Self {
             point: Point::new(),
-            direction: D::default(),
+            direction: Direction::default(),
             value: 1,
             steps: 1,
         }
@@ -44,10 +27,10 @@ impl SpiralingPoint {
 
     pub fn step(&mut self) -> &mut Self {
         match self.direction {
-            D::Right => self.point.x += 1,
-            D::Up => self.point.y += 1,
-            D::Left => self.point.x -= 1,
-            D::Down => self.point.y -= 1,
+            Direction::Right => self.point.x += 1,
+            Direction::Up => self.point.y += 1,
+            Direction::Left => self.point.x -= 1,
+            Direction::Down => self.point.y -= 1,
         }
         self.value += 1;
         self

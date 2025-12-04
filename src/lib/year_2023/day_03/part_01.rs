@@ -1,13 +1,12 @@
+use crate::{
+    common::grid::{Grid, GridOps},
+    year_2023::day_03::{grid::GridOpsExt, part_number::PartNumber},
+};
 use std::collections::HashSet;
 
-use crate::year_2023::day_03::{
-    grid::{Grid, GridOperations},
-    part_number::PartNumber,
-};
-
-pub fn part_01(input: &Grid) -> usize {
+pub fn part_01(input: &Grid<char>) -> usize {
     input
-        .points()
+        .to_points()
         .iter()
         .filter_map(|p| input.get_part_number_at_point(*p))
         .collect::<HashSet<PartNumber>>()

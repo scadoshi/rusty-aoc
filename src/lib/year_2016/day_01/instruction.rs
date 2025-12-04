@@ -1,9 +1,9 @@
-use crate::year_2016::day_01::directions::TurningDirection;
+use crate::year_2016::day_01::turn::TurnDirection;
 
 #[derive(Debug, Clone)]
 pub struct Instruction {
-    pub direction: TurningDirection,
-    pub distance: i32,
+    pub direction: TurnDirection,
+    pub distance: isize,
 }
 
 impl From<&str> for Instruction {
@@ -16,8 +16,8 @@ impl From<&str> for Instruction {
             .collect::<String>()
             .as_str()
         {
-            "l" => TurningDirection::Left,
-            "r" => TurningDirection::Right,
+            "l" => TurnDirection::Left,
+            "r" => TurnDirection::Right,
             x => panic!("invalid turning direction {:?}", x),
         };
         let distance = value
@@ -25,8 +25,8 @@ impl From<&str> for Instruction {
             .skip(1)
             .collect::<String>()
             .trim()
-            .parse::<i32>()
-            .expect("failed to parse i32");
+            .parse::<isize>()
+            .unwrap();
         Self {
             direction,
             distance,

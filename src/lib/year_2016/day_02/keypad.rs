@@ -1,11 +1,11 @@
-use crate::year_2016::day_02::direction::Direction as D;
-
 // std keypad
 // i | 0 1 2
 // ---------
 // 0 | 1 2 3
 // 1 | 4 5 6
 // 2 | 7 8 9
+
+use crate::common::direction::Direction;
 
 const STANDARD_KEYPAD: [[Option<char>; 3]; 3] = [
     [Some('1'), Some('2'), Some('3')],
@@ -57,7 +57,7 @@ impl Keypad {
         Self { keypad, point }
     }
 
-    pub fn traverse(&mut self, direction: &D) {
+    pub fn traverse(&mut self, direction: Direction) {
         let new = self.point.traverse(direction);
         let Some(row): Option<&Vec<Option<char>>> = self.keypad.get(new.row) else {
             return;
@@ -78,12 +78,12 @@ impl Point {
         Self { row, col }
     }
 
-    pub fn traverse(&self, direction: &D) -> Point {
+    pub fn traverse(&self, direction: Direction) -> Point {
         match direction {
-            D::Up => Point::new(self.row.saturating_sub(1), self.col),
-            D::Down => Point::new(self.row.saturating_add(1), self.col),
-            D::Left => Point::new(self.row, self.col.saturating_sub(1)),
-            D::Right => Point::new(self.row, self.col.saturating_add(1)),
+            Direction::Up => Point::new(self.row.saturating_sub(1), self.col),
+            Direction::Down => Point::new(self.row.saturating_add(1), self.col),
+            Direction::Left => Point::new(self.row, self.col.saturating_sub(1)),
+            Direction::Right => Point::new(self.row, self.col.saturating_add(1)),
         }
     }
 }

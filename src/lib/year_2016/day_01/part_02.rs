@@ -1,11 +1,11 @@
-use crate::year_2016::day_01::{
-    instruction::Instruction,
-    point::{DirectionalPoint, Point},
+use crate::{
+    common::cartesian_point::Point,
+    year_2016::day_01::{directional_point::DirectionalPoint, instruction::Instruction},
 };
 use std::collections::HashSet;
 
 #[allow(dead_code)]
-pub fn part_02(input: &[Instruction]) -> Option<i32> {
+pub fn part_02(input: &[Instruction]) -> Option<usize> {
     let mut directional_point = DirectionalPoint::default();
     let mut visited: HashSet<Point> = HashSet::from([Point::default()]);
     for instruction in input.iter() {

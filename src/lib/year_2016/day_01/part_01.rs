@@ -1,7 +1,7 @@
-use crate::year_2016::day_01::{instruction::Instruction, point::DirectionalPoint};
+use crate::year_2016::day_01::{directional_point::DirectionalPoint, instruction::Instruction};
 
 #[allow(dead_code)]
-pub fn part_01(input: &[Instruction]) -> i32 {
+pub fn part_01(input: &[Instruction]) -> usize {
     input
         .iter()
         .fold(

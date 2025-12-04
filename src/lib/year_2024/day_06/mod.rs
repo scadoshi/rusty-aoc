@@ -1,7 +1,7 @@
 pub mod get_input;
+mod guard;
 pub mod part_01;
 pub mod part_02;
-mod point;
 
 pub use get_input::get_input;
 pub use part_01::part_01;

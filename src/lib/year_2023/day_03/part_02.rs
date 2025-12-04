@@ -1,8 +1,11 @@
-use crate::year_2023::day_03::grid::{Grid, GridOperations};
+use crate::{
+    common::grid::{Grid, GridOps},
+    year_2023::day_03::grid::GridOpsExt,
+};
 
-pub fn part_02(input: &Grid) -> usize {
+pub fn part_02(input: &Grid<char>) -> usize {
     input
-        .points()
+        .to_points()
         .iter()
         .filter_map(|p| input.get_gear_ratio_at_point(*p))
         .sum()

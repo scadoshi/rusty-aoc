@@ -1,7 +1,4 @@
-use crate::year_2024::day_04::{
-    grid::{Grid, GridOperations},
-    point::Point,
-};
+use crate::common::grid::{Grid, GridOps, Point};
 
 mod moves {
     pub const ALL: [(isize, isize); 8] = [
@@ -20,9 +17,9 @@ pub trait XmasAtPoint {
     fn xmas_at_point(&self, point: Point) -> usize;
 }
 
-impl XmasAtPoint for Grid {
+impl XmasAtPoint for Grid<char> {
     fn xmas_at_point(&self, point: Point) -> usize {
-        let Some(value) = self.value_at_point(point) else {
+        let Some(value) = self.get_value_at_point(point) else {
             return 0;
         };
         if !value.eq_ignore_ascii_case(&'x') {
@@ -38,7 +35,7 @@ impl XmasAtPoint for Grid {
                     break;
                 };
                 let new = Point { row, col };
-                let Some(value) = self.value_at_point(new) else {
+                let Some(value) = self.get_value_at_point(new) else {
                     break;
                 };
                 if (i == 1 && value != 'M') || (i == 2 && value != 'A') || (i == 3 && value != 'S')
