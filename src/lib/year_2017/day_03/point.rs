@@ -14,7 +14,7 @@ impl Point {
     }
 
     pub fn distance_from_origin(&self) -> usize {
-        ((self.x).abs() + (self.y).abs()) as usize
+        usize::try_from((self.x).abs() + (self.y).abs()).unwrap()
     }
 }
 

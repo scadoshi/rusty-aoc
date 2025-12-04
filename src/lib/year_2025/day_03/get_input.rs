@@ -3,7 +3,7 @@ pub fn get_input() -> Vec<Vec<u8>> {
         .lines()
         .map(|line| {
             line.chars()
-                .map(|c| c.to_digit(10).unwrap() as u8)
+                .map(|c| u8::try_from(c.to_digit(10).unwrap()).unwrap())
                 .collect::<Vec<u8>>()
         })
         .collect()
