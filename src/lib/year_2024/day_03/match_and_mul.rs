@@ -6,9 +6,7 @@ pub trait MatchAndMul {
 
 impl<T: AsRef<str>> MatchAndMul for T {
     fn match_and_mul(&self) -> Option<usize> {
-        let Some(captures) = MUL_PATTERN.captures(self.as_ref()) else {
-            return None;
-        };
+        let captures = MUL_PATTERN.captures(self.as_ref())?;
         let (Ok(num1), Ok(num2)) = (captures[1].parse::<usize>(), captures[2].parse::<usize>())
         else {
             return None;

@@ -1,5 +1,3 @@
-use std::usize;
-
 pub type Bank = Vec<u8>;
 pub trait MaxJoltage {
     fn max_joltage(&self, count: u8) -> usize;

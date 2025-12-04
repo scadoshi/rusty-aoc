@@ -52,7 +52,7 @@ impl CrossMasAtPoint for Grid<char> {
             else {
                 return false;
             };
-            if !(value1 == 'M' && value2 == 'S') && !(value1 == 'S' && value2 == 'M') {
+            if !(value1 == 'M' && value2 == 'S' || value1 == 'S' && value2 == 'M') {
                 return false;
             }
         }

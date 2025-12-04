@@ -96,12 +96,8 @@ impl FindNumber for &str {
     }
 
     fn both_numbers(&self) -> Option<i32> {
-        let Some(first) = self.first_number() else {
-            return None;
-        };
-        let Some(last) = self.last_number() else {
-            return None;
-        };
+        let first = self.first_number()?;
+        let last = self.last_number()?;
         format!("{}{}", first, last).parse::<i32>().ok()
     }
 }

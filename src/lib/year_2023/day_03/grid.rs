@@ -11,12 +11,8 @@ pub trait GridOpsExt {
 
 impl GridOpsExt for Grid<char> {
     fn get_part_number_at_point(&self, point: Point) -> Option<PartNumber> {
-        let Some(value) = self.get_value_at_point(point) else {
-            return None;
-        };
-        let Some(_) = value.to_digit(10) else {
-            return None;
-        };
+        let value = self.get_value_at_point(point)?;
+        let _ = value.to_digit(10)?;
         if !point.adjacent_points().iter().any(|p| {
             self.get_value_at_point(*p)
                 .is_some_and(|value| value != '.' && !value.is_numeric())
@@ -45,9 +41,7 @@ impl GridOpsExt for Grid<char> {
     }
 
     fn get_gear_ratio_at_point(&self, point: Point) -> Option<usize> {
-        let Some(value) = self.get_value_at_point(point) else {
-            return None;
-        };
+        let value = self.get_value_at_point(point)?;
         if value != '*' {
             return None;
         }

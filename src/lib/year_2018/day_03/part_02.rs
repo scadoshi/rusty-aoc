@@ -1,7 +1,7 @@
-use crate::year_2018::day_03::{claim::Claim, point::Point};
+use crate::{common::grid::Points, year_2018::day_03::claim::Claim};
 
 pub fn part_02(input: &[Claim]) -> Option<usize> {
-    let claims: Vec<(usize, Vec<Point>)> = input.iter().fold(Vec::new(), |mut claims, claim| {
+    let claims: Vec<(usize, Points)> = input.iter().fold(Vec::new(), |mut claims, claim| {
         claims.push((claim.id, claim.to_points()));
         claims
     });

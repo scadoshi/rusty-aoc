@@ -15,7 +15,7 @@ pub fn part_02(input: &[Instruction]) -> Option<usize> {
             if visited.contains(&directional_point.point) {
                 return Some(directional_point.point.distance_from_origin());
             } else {
-                visited.insert(directional_point.point.clone());
+                visited.insert(directional_point.point);
             }
         }
     }

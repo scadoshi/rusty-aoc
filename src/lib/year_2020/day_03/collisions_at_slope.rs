@@ -1,20 +1,21 @@
-use crate::year_2020::day_03::point::{Point, ValueAtPoint};
+use crate::common::grid::{Grid, GridOps, Point};
 
 pub trait CollisionsAtSlope {
-    fn collisions_at_slope(&self, row_change_per_step: usize, col_change_per_step: usize) -> usize;
+    fn collisions_at_slope<const R: usize, const C: usize>(&self) -> usize;
 }
 
-impl CollisionsAtSlope for &[Vec<char>] {
-    fn collisions_at_slope(&self, row_change_per_step: usize, col_change_per_step: usize) -> usize {
+impl CollisionsAtSlope for Grid<char> {
+    fn collisions_at_slope<const R: usize, const C: usize>(&self) -> usize {
         let mut point = Point::new();
         let mut total = 0;
         while point.row < self.len() {
-            if let Some(value) = self.value_at_point(point)
-                && value == '#' {
-                    total += 1;
-                }
-            point.row += row_change_per_step;
-            point.col = (point.col + col_change_per_step) % self[0].len();
+            if let Some(value) = self.get_value_at_point(point)
+                && value == '#'
+            {
+                total += 1;
+            }
+            point.row += R;
+            point.col = (point.col + C) % self[0].len();
         }
         total
     }

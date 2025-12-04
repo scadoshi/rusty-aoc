@@ -1,4 +1,4 @@
-use crate::year_2018::day_03::{claim::Claim, point::Point};
+use crate::{common::grid::Point, year_2018::day_03::claim::Claim};
 use std::collections::HashMap;
 
 pub fn part_01(input: &[Claim]) -> usize {
