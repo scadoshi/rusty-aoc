@@ -5,6 +5,7 @@ pub type Grid<T> = Vec<Vec<T>>;
 
 pub trait GridOps<T> {
     fn to_points(&self) -> Points;
+    fn to_points_with_values(&self) -> Vec<(Point, T)>;
     fn get_value_at_point(&self, point: Point) -> Option<T>;
 }
 
@@ -15,6 +16,19 @@ impl<T: Clone> GridOps<T> for Grid<T> {
                 (0..self.get(row).unwrap().len())
                     .map(|col| Point { row, col })
                     .collect::<Vec<Point>>()
+            })
+            .collect()
+    }
+
+    fn to_points_with_values(&self) -> Vec<(Point, T)> {
+        (0..self.len())
+            .flat_map(|row| {
+                (0..self.get(row).unwrap().len())
+                    .map(|col| {
+                        let value = self.get(row).unwrap().get(col).unwrap();
+                        (Point { row, col }, value.clone())
+                    })
+                    .collect::<Vec<(Point, T)>>()
             })
             .collect()
     }

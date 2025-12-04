@@ -20,13 +20,29 @@ impl From<char> for Direction {
 }
 
 impl Direction {
-    pub fn turn_left(&mut self) -> &mut Self {
+    pub fn to_left(&self) -> Self {
         match self {
-            Direction::Up => *self = Direction::Left,
-            Direction::Left => *self = Direction::Down,
-            Direction::Down => *self = Direction::Right,
-            Direction::Right => *self = Direction::Up,
+            Direction::Up => Direction::Left,
+            Direction::Left => Direction::Down,
+            Direction::Down => Direction::Right,
+            Direction::Right => Direction::Up,
         }
-        self
+    }
+
+    pub fn turn_left(&mut self) {
+        *self = self.to_left();
+    }
+
+    pub fn to_right(&self) -> Self {
+        match self {
+            Direction::Up => Direction::Right,
+            Direction::Right => Direction::Down,
+            Direction::Down => Direction::Left,
+            Direction::Left => Direction::Up,
+        }
+    }
+
+    pub fn turn_right(&mut self) {
+        *self = self.to_right();
     }
 }
