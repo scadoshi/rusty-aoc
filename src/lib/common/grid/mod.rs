@@ -7,6 +7,7 @@ pub trait GridOps<T> {
     fn to_points(&self) -> Points;
     fn to_points_with_values(&self) -> Vec<(Point, T)>;
     fn get_value_at_point(&self, point: Point) -> Option<T>;
+    fn set_value_at_point(&mut self, value: T, point: Point) -> bool;
 }
 
 impl<T: Clone> GridOps<T> for Grid<T> {
@@ -38,5 +39,16 @@ impl<T: Clone> GridOps<T> for Grid<T> {
             return None;
         };
         row.get(point.col).cloned()
+    }
+
+    fn set_value_at_point(&mut self, value: T, point: Point) -> bool {
+        let Some(row) = self.get_mut(point.row) else {
+            return false;
+        };
+        if let Some(cell) = row.get_mut(point.col) {
+            *cell = value;
+            return true;
+        }
+        false
     }
 }

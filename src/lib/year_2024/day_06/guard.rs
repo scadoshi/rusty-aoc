@@ -61,7 +61,6 @@ pub struct Path {
 pub trait GuardOps {
     fn find_guard(&self) -> Guard;
     fn simulate_guard(&self) -> Path;
-    fn place_obstacle(&mut self, point: Point);
 }
 
 impl GuardOps for Grid<char> {
@@ -91,15 +90,6 @@ impl GuardOps for Grid<char> {
         Path {
             visited,
             infinite_loop_encountered,
-        }
-    }
-
-    fn place_obstacle(&mut self, point: Point) {
-        let Some(row) = self.get_mut(point.row) else {
-            return;
-        };
-        if let Some(value) = row.get_mut(point.col) {
-            *value = '#';
         }
     }
 }
