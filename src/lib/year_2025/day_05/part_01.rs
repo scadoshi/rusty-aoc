@@ -1,9 +1,11 @@
-use range_set_blaze::RangeSetBlaze;
-
-pub fn part_01(input: &(RangeSetBlaze<usize>, Vec<usize>)) -> usize {
-    let (range, values) = input;
+pub fn part_01(input: &(Vec<(usize, usize)>, Vec<usize>)) -> usize {
+    let (ranges, values) = input;
     values
         .iter()
-        .filter(|value| range.contains(**value))
+        .filter(|value| {
+            ranges
+                .iter()
+                .any(|&(start, end)| **value >= start && **value <= end)
+        })
         .count()
 }

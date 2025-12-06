@@ -1,18 +1,16 @@
-use range_set_blaze::RangeSetBlaze;
-
-pub fn get_input() -> (RangeSetBlaze<usize>, Vec<usize>) {
+pub fn get_input() -> (Vec<(usize, usize)>, Vec<usize>) {
     let (ranges, values) = include_str!("input.txt").split_once("\n\n").unwrap();
     (
         ranges
             .trim()
             .lines()
-            .map(|rng_str| {
-                let (start, end) = rng_str.split_once('-').unwrap();
-                let (start, end) = (
-                    start.parse::<usize>().unwrap(),
-                    end.parse::<usize>().unwrap(),
+            .map(|range_string| {
+                let (str1, str2) = range_string.split_once('-').unwrap();
+                let (num1, num2) = (
+                    str1.parse::<usize>().unwrap(),
+                    str2.parse::<usize>().unwrap(),
                 );
-                start..=end
+                (num1.min(num2), num1.max(num2))
             })
             .collect(),
         values
