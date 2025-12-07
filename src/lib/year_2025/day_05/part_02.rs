@@ -1,6 +1,6 @@
 pub fn part_02(input: &(Vec<(usize, usize)>, Vec<usize>)) -> usize {
     let (mut ranges, _) = input.clone();
-    ranges.sort_by(|(a, _), (b, _)| a.cmp(b));
+    ranges.sort_by_key(|x| x.0);
     let mut merged = vec![ranges.remove(0)];
     while !ranges.is_empty() {
         let last = merged.len() - 1;
