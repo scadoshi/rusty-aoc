@@ -8,11 +8,6 @@ pub trait GetInput {
 
 impl GetInput for &'static str {
     fn ops(self) -> impl Iterator<Item = u8> {
-        self.lines()
-            .last()
-            .unwrap()
-            .bytes()
-            .into_iter()
-            .filter(|b| *b != b' ')
+        self.lines().last().unwrap().bytes().filter(|b| *b != b' ')
     }
 }
