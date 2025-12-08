@@ -11,8 +11,6 @@ pub trait GridOps<T> {
     fn get_value_at_point(&self, point: Point) -> Option<T>;
     fn set_value_at_point(&mut self, value: T, point: Point) -> bool;
     fn find_point_with_value(&self, value: T) -> Option<Point>;
-    fn print(&self);
-    fn clear_and_print(&self);
 }
 
 impl<T> GridOps<T> for Grid<T>
