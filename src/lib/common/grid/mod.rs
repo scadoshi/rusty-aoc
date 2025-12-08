@@ -1,4 +1,6 @@
 pub mod point;
+use std::fmt::Debug;
+
 pub use point::{Point, Points};
 
 pub type Grid<T> = Vec<Vec<T>>;
@@ -8,9 +10,15 @@ pub trait GridOps<T> {
     fn to_points_with_values(&self) -> Vec<(Point, T)>;
     fn get_value_at_point(&self, point: Point) -> Option<T>;
     fn set_value_at_point(&mut self, value: T, point: Point) -> bool;
+    fn find_point_with_value(&self, value: T) -> Option<Point>;
+    fn print(&self);
+    fn clear_and_print(&self);
 }
 
-impl<T: Clone> GridOps<T> for Grid<T> {
+impl<T> GridOps<T> for Grid<T>
+where
+    T: Clone + PartialEq + Debug,
+{
     fn to_points(&self) -> Points {
         (0..self.len())
             .flat_map(|row| {
@@ -48,5 +56,30 @@ impl<T: Clone> GridOps<T> for Grid<T> {
             return true;
         }
         false
+    }
+
+    fn find_point_with_value(&self, value: T) -> Option<Point> {
+        self.to_points()
+            .into_iter()
+            .find(|&point| self.get_value_at_point(point).is_some_and(|v| v == value))
+    }
+
+    fn print(&self) {
+        println!(
+            "{}",
+            self.iter()
+                .map(|row| {
+                    row.iter()
+                        .map(|value| format!("{:?}", value))
+                        .collect::<String>()
+                        .replace("'", "")
+                })
+                .collect::<Vec<String>>()
+                .join("\n")
+        )
+    }
+    fn clear_and_print(&self) {
+        print!("\x1B[2J\x1B[1;1H");
+        self.print();
     }
 }
