@@ -10,7 +10,7 @@ pub fn part_02(input: &Grid<&'static u8>) -> usize {
     let mut points = HashMap::<Point, usize>::from([(start, 1)]);
     while !points.is_empty() {
         let mut next = HashMap::<Point, usize>::new();
-        for (point, count) in points {
+        points.iter().for_each(|(point, count)| {
             if let Some(down) = point.next_point_in_direction(Direction::Down)
                 && let Some(value) = input.get_value_at_point(down)
             {
@@ -27,7 +27,7 @@ pub fn part_02(input: &Grid<&'static u8>) -> usize {
             } else {
                 total += count;
             }
-        }
+        });
         points = next;
     }
     total
