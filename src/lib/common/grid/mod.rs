@@ -63,23 +63,4 @@ where
             .into_iter()
             .find(|&point| self.get_value_at_point(point).is_some_and(|v| v == value))
     }
-
-    fn print(&self) {
-        println!(
-            "{}",
-            self.iter()
-                .map(|row| {
-                    row.iter()
-                        .map(|value| format!("{:?}", value))
-                        .collect::<String>()
-                        .replace("'", "")
-                })
-                .collect::<Vec<String>>()
-                .join("\n")
-        )
-    }
-    fn clear_and_print(&self) {
-        print!("\x1B[2J\x1B[1;1H");
-        self.print();
-    }
 }
