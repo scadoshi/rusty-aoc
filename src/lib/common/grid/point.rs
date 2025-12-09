@@ -1,5 +1,7 @@
 use crate::common::direction::Direction;
 
+pub type Line: Vec<Point>;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub struct Point {
     pub row: usize,
@@ -46,6 +48,13 @@ impl Point {
                 .col
                 .checked_sub(1)
                 .map(|col| Point { row: self.row, col }),
+        }
+    }
+
+    pub fn pivoted(self) -> Self {
+        Point {
+            row: self.col,
+            col: self.row,
         }
     }
 }
