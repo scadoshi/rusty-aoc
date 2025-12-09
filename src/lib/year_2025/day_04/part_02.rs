@@ -1,7 +1,4 @@
-use crate::{
-    common::grid::{Grid, GridOps},
-    year_2025::day_04::removeable::Removeable,
-};
+use crate::{common::grid::Grid, year_2025::day_04::removeable::Removeable};
 
 pub fn part_02(input: &Grid<char>) -> usize {
     let mut grid = input.clone();

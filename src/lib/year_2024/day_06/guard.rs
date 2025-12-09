@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use crate::common::{
     direction::Direction,
-    grid::{Grid, GridOps, Point},
+    grid::{Grid, Point},
 };
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -35,7 +35,7 @@ impl Guard {
                 let Some(value) = grid.get_value_at_point(next) else {
                     return Guard::Away;
                 };
-                if value == '#' {
+                if *value == '#' {
                     Guard::Present {
                         direction: direction.to_right(),
                         point: *point,

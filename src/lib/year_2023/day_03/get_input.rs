@@ -3,6 +3,6 @@ use crate::common::grid::Grid;
 pub fn get_input() -> Grid<char> {
     include_str!("input.txt")
         .lines()
-        .map(|x| x.chars().collect())
+        .map(|x| x.chars().collect::<Vec<char>>())
         .collect()
 }

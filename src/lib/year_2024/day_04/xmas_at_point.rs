@@ -1,4 +1,4 @@
-use crate::common::grid::{Grid, GridOps, Point};
+use crate::common::grid::{Grid, Point};
 
 mod moves {
     pub const ALL: [(isize, isize); 8] = [
@@ -38,10 +38,12 @@ impl XmasAtPoint for Grid<char> {
                 let Some(value) = self.get_value_at_point(new) else {
                     break;
                 };
-                if (i == 1 && value != 'M') || (i == 2 && value != 'A') || (i == 3 && value != 'S')
+                if (i == 1 && *value != 'M')
+                    || (i == 2 && *value != 'A')
+                    || (i == 3 && *value != 'S')
                 {
                     break;
-                } else if i == 3 && value == 'S' {
+                } else if i == 3 && *value == 'S' {
                     total += 1;
                 }
             }

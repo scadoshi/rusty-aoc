@@ -1,7 +1,4 @@
-use crate::{
-    common::grid::{Grid, GridOps},
-    year_2024::day_04::xmas_at_point::XmasAtPoint,
-};
+use crate::{common::grid::Grid, year_2024::day_04::xmas_at_point::XmasAtPoint};
 
 pub fn part_01(input: &Grid<char>) -> usize {
     input

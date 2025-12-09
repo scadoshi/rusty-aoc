@@ -1,5 +1,5 @@
 use crate::{
-    common::grid::{Grid, GridOps, Point},
+    common::grid::{Grid, Point},
     year_2023::day_03::part_number::PartNumber,
 };
 use std::collections::HashSet;
@@ -15,11 +15,11 @@ impl GridOpsExt for Grid<char> {
         let _ = value.to_digit(10)?;
         if !point.adjacent_points().iter().any(|p| {
             self.get_value_at_point(*p)
-                .is_some_and(|value| value != '.' && !value.is_numeric())
+                .is_some_and(|value| *value != '.' && !value.is_numeric())
         }) {
             return None;
         }
-        let row = &self[point.row];
+        let row = self.get_row(point.row)?;
         let mut col_start = point.col;
         while col_start > 0 && row.get(col_start - 1).is_some_and(|c| c.is_numeric()) {
             col_start -= 1;
@@ -42,7 +42,7 @@ impl GridOpsExt for Grid<char> {
 
     fn get_gear_ratio_at_point(&self, point: Point) -> Option<usize> {
         let value = self.get_value_at_point(point)?;
-        if value != '*' {
+        if *value != '*' {
             return None;
         }
         let part_numbers: HashSet<PartNumber> = point

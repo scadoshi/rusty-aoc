@@ -1,5 +1,5 @@
 use crate::{
-    common::grid::{Grid, GridOps},
+    common::grid::Grid,
     year_2023::day_03::{grid::GridOpsExt, part_number::PartNumber},
 };
 use std::collections::HashSet;

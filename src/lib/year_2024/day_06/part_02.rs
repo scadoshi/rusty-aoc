@@ -1,7 +1,4 @@
-use crate::{
-    common::grid::{Grid, GridOps},
-    year_2024::day_06::guard::GuardOps,
-};
+use crate::{common::grid::Grid, year_2024::day_06::guard::GuardOps};
 
 pub fn part_02(input: &Grid<char>) -> usize {
     let path = input.simulate_guard();

@@ -1,7 +1,4 @@
-use crate::{
-    common::grid::{Point, Points},
-    year_2018::day_03::dimensions::Dimensions,
-};
+use crate::{common::grid::Point, year_2018::day_03::dimensions::Dimensions};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Claim {
@@ -11,7 +8,7 @@ pub struct Claim {
 }
 
 impl Claim {
-    pub fn to_points(self) -> Points {
+    pub fn to_points(self) -> Vec<Point> {
         (0..self.dimensions.height)
             .flat_map(|row| {
                 (0..self.dimensions.width)
@@ -19,7 +16,7 @@ impl Claim {
                         row: row + self.top_left_corner.row,
                         col: col + self.top_left_corner.col,
                     })
-                    .collect::<Points>()
+                    .collect::<Vec<Point>>()
             })
             .collect()
     }

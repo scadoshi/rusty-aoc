@@ -1,6 +1,6 @@
 use crate::common::{
     direction::Direction,
-    grid::{Grid, GridOps, Point},
+    grid::{Grid, Point},
 };
 use std::collections::HashMap;
 

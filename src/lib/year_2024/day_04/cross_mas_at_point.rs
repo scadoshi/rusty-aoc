@@ -1,4 +1,4 @@
-use crate::common::grid::{Grid, GridOps, Point};
+use crate::common::grid::{Grid, Point};
 
 mod moves {
     pub const FORWARD_SLASH: ((isize, isize), (isize, isize)) = (
@@ -52,7 +52,7 @@ impl CrossMasAtPoint for Grid<char> {
             else {
                 return false;
             };
-            if !(value1 == 'M' && value2 == 'S' || value1 == 'S' && value2 == 'M') {
+            if !(*value1 == 'M' && *value2 == 'S' || *value1 == 'S' && *value2 == 'M') {
                 return false;
             }
         }
