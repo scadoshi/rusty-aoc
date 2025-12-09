@@ -45,4 +45,8 @@ impl Direction {
     pub fn turn_right(&mut self) {
         *self = self.to_right();
     }
+
+    pub fn all() -> [Self; 4] {
+        [Self::Up, Self::Right, Self::Down, Self::Left]
+    }
 }

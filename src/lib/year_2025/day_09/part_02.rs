@@ -1,15 +1,22 @@
-use crate::{common::grid::Point, year_2025::day_09::rectangle::Rectangle};
+use crate::common::{
+    direction::Direction,
+    grid::{Grid, Point},
+};
+use std::{collections::HashSet, ops::RangeInclusive};
 
 pub fn part_02(input: &[Point]) -> usize {
-    input
-        .iter()
-        .enumerate()
-        .flat_map(|(i, p1)| {
-            input
-                .iter()
-                .take(i + 1)
-                .map(|p2| p1.area_of_rectangle_with_other_corner(*p2))
-        })
-        .max()
-        .unwrap()
+    let border: HashSet<Point> = input
+        .windows(2)
+        .filter_map(|w| w[0].axis_line_to(w[1]))
+        .flatten()
+        .collect();
+
+    let max_row = input.iter().map(|p| p.row).max().unwrap();
+    let max_col = input.iter().map(|p| p.col).max().unwrap();
+
+    let mut grid: Grid<(bool, usize)> = (0..=max_row)
+        .map(|_| (0..=max_col).map(|_| (false, 0)).collect())
+        .collect();
+
+    0
 }

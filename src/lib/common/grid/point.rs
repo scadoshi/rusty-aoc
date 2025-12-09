@@ -1,7 +1,5 @@
 use crate::common::direction::Direction;
 
-pub type Line: Vec<Point>;
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub struct Point {
     pub row: usize,
@@ -13,13 +11,17 @@ impl Point {
         Self::default()
     }
 
-    pub fn adjacent_points(&self) -> Vec<Self> {
-        let mut points = Vec::<Point>::new();
+    pub fn at(row: usize, col: usize) -> Self {
+        Point { row, col }
+    }
+
+    pub fn adjacent_points(&self) -> Points {
+        let mut points = Points::new();
         for dr in -1_isize..=1 {
             if let Some(row) = self.row.checked_add_signed(dr) {
                 for dc in -1_isize..=1 {
                     if let Some(col) = self.col.checked_add_signed(dc) {
-                        let point = Point { row, col };
+                        let point = Point::at(row, col);
                         if *self != point {
                             points.push(point)
                         }
@@ -32,29 +34,28 @@ impl Point {
 
     pub fn next_point_in_direction(&self, direction: Direction) -> Option<Self> {
         match direction {
-            Direction::Up => self
-                .row
-                .checked_sub(1)
-                .map(|row| Point { row, col: self.col }),
-            Direction::Right => self
-                .col
-                .checked_add(1)
-                .map(|col| Point { row: self.row, col }),
-            Direction::Down => self
-                .row
-                .checked_add(1)
-                .map(|row| Point { row, col: self.col }),
-            Direction::Left => self
-                .col
-                .checked_sub(1)
-                .map(|col| Point { row: self.row, col }),
+            Direction::Up => self.row.checked_sub(1).map(|row| Point::at(row, self.col)),
+            Direction::Right => self.col.checked_add(1).map(|col| Point::at(self.row, col)),
+            Direction::Down => self.row.checked_add(1).map(|row| Point::at(row, self.col)),
+            Direction::Left => self.col.checked_sub(1).map(|col| Point::at(self.row, col)),
         }
     }
 
     pub fn pivoted(self) -> Self {
-        Point {
-            row: self.col,
-            col: self.row,
+        Point::at(self.col, self.row)
+    }
+
+    pub fn axis_line_to(&self, other: Point) -> Option<Points> {
+        if self.row == other.row {
+            let start = self.row.min(other.row);
+            let end = self.row.max(other.row);
+            Some((end..=start).map(|row| Point::at(row, self.col)).collect())
+        } else if self.col == other.col {
+            let start = self.col.min(other.col);
+            let end = self.col.max(other.col);
+            Some((end..=start).map(|col| Point::at(self.row, col)).collect())
+        } else {
+            None
         }
     }
 }
@@ -67,7 +68,7 @@ impl From<&str> for Point {
             from_top_str.parse::<usize>().unwrap(),
             from_left_str.parse::<usize>().unwrap(),
         );
-        Point { row, col }
+        Point::at(row, col)
     }
 }
 
