@@ -83,7 +83,7 @@ impl<T: Display> Grid<T> {
             "-".repeat(margin - 3 + max_col * 3)
         ) + format!("{}", " ".repeat(margin + 1)).as_str()
             + (0..max_col)
-                .map(|i| format!("  {}", i))
+                .map(|i| format!(" | {} | ", i))
                 .collect::<String>()
                 .as_str();
         write!(file, "\n{}", label)?;
