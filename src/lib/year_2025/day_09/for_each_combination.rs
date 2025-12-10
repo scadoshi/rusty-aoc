@@ -1,9 +1,8 @@
 pub trait ForEachCombination {
+    type Item;
     fn for_each_combination<F>(&self, f: F)
     where
         F: FnMut(&Self::Item, &Self::Item);
-
-    type Item;
 }
 
 impl<T> ForEachCombination for [T] {

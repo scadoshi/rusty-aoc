@@ -31,6 +31,7 @@ pub fn part_02(input: &[Point]) -> Option<usize> {
     // ============debug============
 
     let in_bound_ranges = boundary.in_bounds_ranges()?;
+    println!("{:?}", in_bound_ranges); // debug
     let mut max = 0;
     input.for_each_combination(|p1, p2| {
         if p1
