@@ -1,8 +1,13 @@
-use crate::common::grid::{Point, Points};
+use std::{collections::HashMap, ops::RangeInclusive};
+
+use crate::common::grid::Point;
 
 pub trait Rectangle {
     fn area_of_rectangle_with_other_corner(&self, other: Point) -> usize;
-    fn points_of_rectangle_with_other_corner(&self, other: Point) -> Points;
+    fn ranges_of_rectangle_with_other_corner(
+        &self,
+        other: Point,
+    ) -> HashMap<usize, RangeInclusive<usize>>;
 }
 
 impl Rectangle for Point {
@@ -11,13 +16,16 @@ impl Rectangle for Point {
             * self.col.abs_diff(other.col).checked_add(1).unwrap()
     }
 
-    fn points_of_rectangle_with_other_corner(&self, other: Point) -> Points {
-        let row_start = self.row.min(other.row);
-        let col_start = self.col.min(other.col);
-        let row_end = self.row.max(other.row);
-        let col_end = self.col.max(other.col);
-        (row_start..=row_end)
-            .flat_map(|row| (col_start..=col_end).map(move |col| Point::at(row, col)))
+    fn ranges_of_rectangle_with_other_corner(
+        &self,
+        other: Point,
+    ) -> HashMap<usize, RangeInclusive<usize>> {
+        let min_row = self.row.min(other.row);
+        let max_row = self.row.max(other.row);
+        let min_col = self.col.min(other.col);
+        let max_col = self.col.max(other.col);
+        (min_row..=max_row)
+            .map(|row| (row, min_col..=max_col))
             .collect()
     }
 }
