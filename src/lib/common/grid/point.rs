@@ -15,8 +15,8 @@ impl Point {
         Point { row, col }
     }
 
-    pub fn adjacent_points(&self) -> Points {
-        let mut points = Points::new();
+    pub fn adjacent_points(&self) -> Vec<Point> {
+        let mut points = Vec::<Point>::new();
         for dr in -1_isize..=1 {
             if let Some(row) = self.row.checked_add_signed(dr) {
                 for dc in -1_isize..=1 {
@@ -45,15 +45,17 @@ impl Point {
         Point::at(self.col, self.row)
     }
 
-    pub fn axis_line_to(&self, other: Point) -> Option<Points> {
+    pub fn axis_line_to(&self, other: Point) -> Option<Vec<Point>> {
         if self.row == other.row {
-            let start = self.row.min(other.row);
-            let end = self.row.max(other.row);
-            Some((end..=start).map(|row| Point::at(row, self.col)).collect())
-        } else if self.col == other.col {
             let start = self.col.min(other.col);
             let end = self.col.max(other.col);
-            Some((end..=start).map(|col| Point::at(self.row, col)).collect())
+            let points: Vec<Point> = (start..=end).map(|col| Point::at(self.row, col)).collect();
+            Some(points)
+        } else if self.col == other.col {
+            let start = self.row.min(other.row);
+            let end = self.row.max(other.row);
+            let points: Vec<Point> = (start..=end).map(|row| Point::at(row, self.col)).collect();
+            Some(points)
         } else {
             None
         }
@@ -71,5 +73,3 @@ impl From<&str> for Point {
         Point::at(row, col)
     }
 }
-
-pub type Points = Vec<Point>;
