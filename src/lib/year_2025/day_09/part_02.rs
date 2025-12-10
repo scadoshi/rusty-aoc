@@ -18,7 +18,7 @@ pub fn part_02(input: &[Point]) -> Option<usize> {
     // ============debug============
     let mut grid = Grid::from_points_as_bounds_with_default(
         boundary.clone().into_iter().collect::<Vec<Point>>(),
-        '.',
+        ' ',
     )
     .unwrap();
     for point in boundary.iter() {

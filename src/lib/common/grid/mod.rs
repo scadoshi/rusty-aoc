@@ -65,11 +65,11 @@ impl<T: Display> Grid<T> {
             .enumerate()
             .map(|(row, value)| {
                 let current_digit_count = row.to_string().len();
-                let margin = max_row_digit_count + 3 - current_digit_count;
+                let margin = max_row_digit_count + 4 - current_digit_count;
                 format!("{}{}|", row, " ".repeat(margin))
                     + value
                         .iter()
-                        .map(|x| format!("  {}", x))
+                        .map(|x| format!("  {} ", x))
                         .collect::<String>()
                         .as_str()
             })
@@ -79,11 +79,11 @@ impl<T: Display> Grid<T> {
         let margin = max_row_digit_count + 3;
         let label: String = format!(
             "{}{}\n",
-            " ".repeat(margin),
-            "-".repeat(margin - 3 + max_col * 3)
+            " ".repeat(margin + 2),
+            "-".repeat(margin + 10 + max_col * 3)
         ) + format!("{}", " ".repeat(margin + 1)).as_str()
             + (0..max_col)
-                .map(|i| format!(" | {} | ", i))
+                .map(|i| format!(" | {}", i))
                 .collect::<String>()
                 .as_str();
         write!(file, "\n{}", label)?;
