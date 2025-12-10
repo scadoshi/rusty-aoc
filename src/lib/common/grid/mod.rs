@@ -1,4 +1,5 @@
 pub mod point;
+use anyhow::anyhow;
 pub use point::Point;
 use std::{
     fmt::{Debug, Display},
@@ -39,10 +40,13 @@ impl<T: Clone> Grid<T> {
             .collect()
     }
 
-    pub fn from_points_as_bounds_with_default(points: &[Point], default: T) -> Option<Self> {
+    pub fn from_points_as_bounds_with_default(
+        points: impl AsRef<[Point]>,
+        default: T,
+    ) -> Option<Self> {
         let (Some(row), Some(col)) = (
-            points.iter().map(|p| p.row).max(),
-            points.iter().map(|p| p.col).max(),
+            points.as_ref().iter().map(|p| p.row).max(),
+            points.as_ref().iter().map(|p| p.col).max(),
         ) else {
             return None;
         };
@@ -50,29 +54,39 @@ impl<T: Clone> Grid<T> {
     }
 }
 
-impl<T: Debug> Display for Grid<T> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl<T: Display> Grid<T> {
+    pub fn write_to(&self, file: &mut File) -> anyhow::Result<()> {
+        let (max_row, Some(max_col)) = (self.len(), self.max_row_len()) else {
+            return Err(anyhow!("grid must have rows; rows must have values"));
+        };
+        let max_row_digit_count = max_row.to_string().len();
         let display = self
-            .values
             .iter()
-            .map(|row| {
-                row.iter()
-                    .map(|value| format!("{:?}", value))
-                    .collect::<String>()
+            .enumerate()
+            .map(|(row, value)| {
+                let current_digit_count = row.to_string().len();
+                let margin = max_row_digit_count + 3 - current_digit_count;
+                format!("{}{}|", row, " ".repeat(margin))
+                    + value
+                        .iter()
+                        .map(|x| format!("  {}", x))
+                        .collect::<String>()
+                        .as_str()
             })
             .collect::<Vec<String>>()
             .join("\n");
-        println!("{}", display);
-        write!(f, "{}", display)
-    }
-}
-
-impl<T: Debug> Grid<T> {
-    pub fn write_to(&self, file: &mut File) -> anyhow::Result<()> {
-        for row in self.iter() {
-            let s = row.iter().map(|x| format!(" {:?} ", x)).collect::<String>();
-            write!(file, "{}", s)?
-        }
+        write!(file, "{}", display)?;
+        let margin = max_row_digit_count + 3;
+        let label: String = format!(
+            "{}{}\n",
+            " ".repeat(margin),
+            "-".repeat(margin - 3 + max_col * 3)
+        ) + format!("{}", " ".repeat(margin + 1)).as_str()
+            + (0..max_col)
+                .map(|i| format!("  {}", i))
+                .collect::<String>()
+                .as_str();
+        write!(file, "\n{}", label)?;
         Ok(())
     }
 }
@@ -84,10 +98,10 @@ impl<T: Default> Grid<T> {
             .collect()
     }
 
-    pub fn from_points_as_bounds<'a>(points: &[Point]) -> Option<Self> {
+    pub fn from_points_as_bounds(points: impl AsRef<[Point]>) -> Option<Self> {
         let (Some(row), Some(col)) = (
-            points.iter().map(|p| p.row).max(),
-            points.iter().map(|p| p.col).max(),
+            points.as_ref().iter().map(|p| p.row).max(),
+            points.as_ref().iter().map(|p| p.col).max(),
         ) else {
             return None;
         };
