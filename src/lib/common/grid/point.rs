@@ -44,22 +44,6 @@ impl Point {
     pub fn pivoted(self) -> Self {
         Point::at(self.col, self.row)
     }
-
-    pub fn axis_line_to(&self, other: Point) -> Option<Vec<Point>> {
-        if self.row == other.row {
-            let start = self.col.min(other.col);
-            let end = self.col.max(other.col);
-            let points: Vec<Point> = (start..=end).map(|col| Point::at(self.row, col)).collect();
-            Some(points)
-        } else if self.col == other.col {
-            let start = self.row.min(other.row);
-            let end = self.row.max(other.row);
-            let points: Vec<Point> = (start..=end).map(|row| Point::at(row, self.col)).collect();
-            Some(points)
-        } else {
-            None
-        }
-    }
 }
 
 impl From<&str> for Point {

@@ -1,44 +1,35 @@
 use crate::{
-    common::grid::{Grid, Point},
-    year_2025::day_09::{
-        boundary::Boundary, for_each_combination::ForEachCombination, rectangle::Rectangle,
-    },
+    common::grid::Point,
+    year_2025::day_09::{for_each_combination::ForEachCombination, rectangle::Rectangle},
 };
-use std::collections::HashSet;
+use std::{collections::HashMap, ops::RangeInclusive};
 
 pub fn part_02(input: &[Point]) -> Option<usize> {
-    let boundary: HashSet<Point> = (0..input.len())
+    let boundary = (0..input.len())
         .filter_map(|p| {
             let p1 = input.get(p)?;
             let p2 = input.get((p + 1) % input.len())?;
-            p1.axis_line_to(*p2)
+            Some((p1, p2))
         })
-        .flatten()
-        .collect();
-    // ============debug============
-    let mut grid = Grid::from_points_as_bounds_with_default(
-        boundary.clone().into_iter().collect::<Vec<Point>>(),
-        ' ',
-    )
-    .unwrap();
-    for point in boundary.iter() {
-        grid.set_value_at_point('x', *point);
-    }
-    let mut output = std::fs::File::create(
-        "/Users/scottyrayfermo/Documents/education/rust/rusty-aoc/src/lib/year_2025/day_09/output.txt",
-    ).unwrap();
-    grid.write_to(&mut output).unwrap();
-    // ============debug============
-
-    let in_bound_ranges = boundary.in_bounds_ranges()?;
-    println!("{:?}", in_bound_ranges); // debug
+        .fold(
+            HashMap::<usize, Vec<RangeInclusive<usize>>>::new(),
+            |mut boundary, (p1, p2)| {
+                (p1.row.min(p2.row)..=p1.row.max(p2.row)).for_each(|row| {
+                    boundary
+                        .entry(row)
+                        .or_default()
+                        .push(p1.col.min(p2.col)..=p1.col.max(p2.col))
+                });
+                boundary
+            },
+        );
     let mut max = 0;
     input.for_each_combination(|p1, p2| {
         if p1
             .ranges_of_rectangle_with_other_corner(*p2)
             .iter()
             .all(|(row, rect_range)| {
-                let Some(row_of_ranges) = in_bound_ranges.get(&row) else {
+                let Some(row_of_ranges) = boundary.get(&row) else {
                     return false;
                 };
                 row_of_ranges.iter().any(|bound_range| {
