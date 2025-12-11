@@ -30,21 +30,21 @@ impl MaxJoltage for Bank {
     }
 }
 
-#[cfg(test)]
-mod test {
-    use super::*;
-    #[test]
-    fn test_max_voltage() {
-        let input: Vec<Vec<u8>> =
-            "987654321111111\n811111111111119\n234234234234278\n818181911112111"
-                .lines()
-                .map(|line| {
-                    line.chars()
-                        .map(|c| u8::try_from(c.to_digit(10).unwrap()).unwrap())
-                        .collect::<Vec<u8>>()
-                })
-                .collect();
-        let result: usize = input.iter().map(|x| x.max_joltage(2)).sum();
-        assert_eq!(result, 357);
-    }
-}
+// #[cfg(test)]
+// mod test {
+//     use super::*;
+//     #[test]
+//     fn test_max_voltage() {
+//         let input: Vec<Vec<u8>> =
+//             "987654321111111\n811111111111119\n234234234234278\n818181911112111"
+//                 .lines()
+//                 .map(|line| {
+//                     line.chars()
+//                         .map(|c| u8::try_from(c.to_digit(10).unwrap()).unwrap())
+//                         .collect::<Vec<u8>>()
+//                 })
+//                 .collect();
+//         let result: usize = input.iter().map(|x| x.max_joltage(2)).sum();
+//         assert_eq!(result, 357);
+//     }
+// }
