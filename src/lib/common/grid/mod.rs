@@ -81,7 +81,7 @@ impl<T: Display> Grid<T> {
             "{}{}\n",
             " ".repeat(margin + 2),
             "-".repeat(margin + 10 + max_col * 3)
-        ) + format!("{}", " ".repeat(margin + 1)).as_str()
+        ) + " ".repeat(margin + 1).as_str()
             + (0..max_col)
                 .map(|i| format!(" | {}", i))
                 .collect::<String>()
@@ -123,7 +123,7 @@ impl<T> Grid<T> {
     }
 
     pub fn first_row_len(&self) -> Option<usize> {
-        self.values.iter().next().map(|r| r.len())
+        self.values.first().map(|r| r.len())
     }
 
     pub fn last_row_len(&self) -> Option<usize> {
@@ -148,15 +148,15 @@ impl<T> Grid<T> {
             .collect()
     }
 
-    pub fn rows<'a>(&'a self) -> &'a [Vec<T>] {
+    pub fn rows(&self) -> &[Vec<T>] {
         self.values.as_slice()
     }
 
-    pub fn get_row<'a>(&'a self, index: usize) -> Option<&'a [T]> {
+    pub fn get_row(&self, index: usize) -> Option<&[T]> {
         self.values.get(index).map(|row| row.as_slice())
     }
 
-    pub fn get_value_at_point<'a>(&'a self, point: Point) -> Option<&'a T> {
+    pub fn get_value_at_point(&self, point: Point) -> Option<&T> {
         let row = self.values.get(point.row)?;
         row.get(point.col)
     }

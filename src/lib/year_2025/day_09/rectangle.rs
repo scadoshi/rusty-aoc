@@ -1,31 +1,36 @@
+use crate::common::grid::Point;
 use std::{collections::HashMap, ops::RangeInclusive};
 
-use crate::common::grid::Point;
-
-pub trait Rectangle {
-    fn area_of_rectangle_with_other_corner(&self, other: Point) -> usize;
-    fn ranges_of_rectangle_with_other_corner(
-        &self,
-        other: Point,
-    ) -> HashMap<usize, RangeInclusive<usize>>;
+pub trait OfRectangleWithOtherCorner {
+    fn height(&self, other: Point) -> usize;
+    fn width(&self, other: Point) -> usize;
+    fn area(&self, other: Point) -> usize;
+    fn perimeter_ranges(&self, other: Point) -> HashMap<usize, RangeInclusive<usize>>;
 }
 
-impl Rectangle for Point {
-    fn area_of_rectangle_with_other_corner(&self, other: Point) -> usize {
-        self.row.abs_diff(other.row).checked_add(1).unwrap()
-            * self.col.abs_diff(other.col).checked_add(1).unwrap()
+impl OfRectangleWithOtherCorner for Point {
+    fn height(&self, other: Point) -> usize {
+        self.row.abs_diff(other.row)
     }
 
-    fn ranges_of_rectangle_with_other_corner(
-        &self,
-        other: Point,
-    ) -> HashMap<usize, RangeInclusive<usize>> {
-        let min_row = self.row.min(other.row);
-        let max_row = self.row.max(other.row);
-        let min_col = self.col.min(other.col);
-        let max_col = self.col.max(other.col);
-        (min_row..=max_row)
-            .map(|row| (row, min_col..=max_col))
-            .collect()
+    fn width(&self, other: Point) -> usize {
+        self.col.abs_diff(other.col)
+    }
+
+    fn area(&self, other: Point) -> usize {
+        self.height(other) * self.width(other)
+    }
+
+    fn perimeter_ranges(&self, other: Point) -> HashMap<usize, RangeInclusive<usize>> {
+        let mut ranges = HashMap::<usize, RangeInclusive<usize>>::new();
+        let (col_start, col_end) = (self.col.min(other.col), self.col.max(other.col));
+        let (row_start, row_end) = (self.row.min(other.row), self.row.max(other.row));
+        ranges.insert(self.row, col_start..=col_end);
+        ranges.insert(other.row, col_start..=col_end);
+        (row_start..=row_end).for_each(|row| {
+            ranges.insert(row, col_start..=col_start);
+            ranges.insert(row, row_start..=row_start);
+        });
+        ranges
     }
 }

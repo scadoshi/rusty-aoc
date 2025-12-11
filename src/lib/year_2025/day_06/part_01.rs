@@ -12,10 +12,10 @@ pub fn part_01(input: &'static str) -> usize {
                 .collect()
         })
         .collect();
-    (0..lines.get(0).unwrap().len())
+    (0..lines.first().unwrap().len())
         .map(|i| {
             let nums = lines.iter().map(|list| *list.get(i).unwrap());
-            match ops.nth(0).unwrap() {
+            match ops.next().unwrap() {
                 b'*' => nums.product(),
                 b'+' => nums.sum(),
                 _ => {

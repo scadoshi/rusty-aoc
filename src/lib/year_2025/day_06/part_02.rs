@@ -20,7 +20,7 @@ pub fn part_02(input: &'static str) -> usize {
             },
         )
         .iter()
-        .map(|nums| match ops.nth(0).unwrap() {
+        .map(|nums| match ops.next().unwrap() {
             b'*' => nums.iter().product(),
             b'+' => nums.iter().sum(),
             _ => {
