@@ -1,31 +1,14 @@
 use crate::{
     common::grid::Point,
     year_2025::day_09::{
-        for_each_combination::ForEachCombination, rectangle::OfRectangleWithOtherCorner,
+        boundary::Boundary, for_each_combination::ForEachCombination,
+        rectangle::OfRectangleWithOtherCorner,
     },
 };
-use std::{collections::HashMap, ops::RangeInclusive};
 
 pub fn part_02(input: &[Point]) -> Option<usize> {
     let started_at = std::time::Instant::now();
-    let boundary = (0..input.len())
-        .filter_map(|p| {
-            let p1 = input.get(p)?;
-            let p2 = input.get((p + 1) % input.len())?;
-            Some((p1, p2))
-        })
-        .fold(
-            HashMap::<usize, Vec<RangeInclusive<usize>>>::new(),
-            |mut boundary, (p1, p2)| {
-                (p1.row.min(p2.row)..=p1.row.max(p2.row)).for_each(|row| {
-                    boundary
-                        .entry(row)
-                        .or_default()
-                        .push(p1.col.min(p2.col)..=p1.col.max(p2.col))
-                });
-                boundary
-            },
-        );
+    let boundary = input.boundary();
     let mut max = 0;
     let total_rectangles: usize = input
         .iter()
@@ -53,8 +36,14 @@ pub fn part_02(input: &[Point]) -> Option<usize> {
         let percentage = rectangles_processed as f32 / total_rectangles as f32 * 100.0;
         if rectangles_processed % 1_000 == 0 {
             println!(
-                "{}/{} | {:.2}% | total: {:?} | avg: {:?} | rem: {:?}",
-                rectangles_processed, total_rectangles, percentage, total_time, avg_time, rem_time
+                "{} | {}/{} | {:.2}% | total: {:?} | avg: {:?} | rem: {:?}",
+                max,
+                rectangles_processed,
+                total_rectangles,
+                percentage,
+                total_time,
+                avg_time,
+                rem_time
             );
         }
     });

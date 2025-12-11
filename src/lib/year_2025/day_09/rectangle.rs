@@ -40,6 +40,8 @@ impl OfRectangleWithOtherCorner for Point {
 
 #[cfg(test)]
 mod test {
+    use std::collections::HashSet;
+
     use super::*;
     #[test]
     fn height() {
@@ -64,15 +66,25 @@ mod test {
         let p1 = Point::at(5, 5);
         let p2 = Point::at(10, 10);
         let expected = Vec::from([
-            (5, vec![5..=10]),
-            (6, vec![5..=5, 10..=10]),
-            (7, vec![5..=5, 10..=10]),
-            (8, vec![5..=5, 10..=10]),
-            (9, vec![5..=5, 10..=10]),
-            (10, vec![5..=10]),
+            (5, HashSet::from([5..=10])),
+            (6, HashSet::from([5..=5, 10..=10])),
+            (7, HashSet::from([5..=5, 10..=10])),
+            (8, HashSet::from([5..=5, 10..=10])),
+            (9, HashSet::from([5..=5, 10..=10])),
+            (10, HashSet::from([5..=10])),
         ]);
-        let mut result: Vec<(usize, Vec<RangeInclusive<usize>>)> =
-            p1.perimeter(p2).into_iter().collect();
+        let mut result: Vec<(usize, HashSet<RangeInclusive<usize>>)> = p1
+            .perimeter(p2)
+            .into_iter()
+            .map(|(row, ranges)| {
+                (
+                    row,
+                    ranges
+                        .into_iter()
+                        .collect::<HashSet<RangeInclusive<usize>>>(),
+                )
+            })
+            .collect();
         result.sort_by_key(|(k, _)| *k);
         assert_eq!(result, expected);
     }
