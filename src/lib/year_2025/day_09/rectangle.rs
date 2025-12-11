@@ -5,7 +5,7 @@ pub trait OfRectangleWithOtherCorner {
     fn height(&self, other: Point) -> usize;
     fn width(&self, other: Point) -> usize;
     fn area(&self, other: Point) -> usize;
-    fn perimeter_ranges(&self, other: Point) -> HashMap<usize, RangeInclusive<usize>>;
+    fn perimeter(&self, other: Point) -> HashMap<usize, Vec<RangeInclusive<usize>>>;
 }
 
 impl OfRectangleWithOtherCorner for Point {
@@ -21,16 +21,59 @@ impl OfRectangleWithOtherCorner for Point {
         self.height(other) * self.width(other)
     }
 
-    fn perimeter_ranges(&self, other: Point) -> HashMap<usize, RangeInclusive<usize>> {
-        let mut ranges = HashMap::<usize, RangeInclusive<usize>>::new();
-        let (col_start, col_end) = (self.col.min(other.col), self.col.max(other.col));
+    fn perimeter(&self, other: Point) -> HashMap<usize, Vec<RangeInclusive<usize>>> {
+        let mut ranges = HashMap::<usize, Vec<RangeInclusive<usize>>>::new();
         let (row_start, row_end) = (self.row.min(other.row), self.row.max(other.row));
-        ranges.insert(self.row, col_start..=col_end);
-        ranges.insert(other.row, col_start..=col_end);
-        (row_start..=row_end).for_each(|row| {
-            ranges.insert(row, col_start..=col_start);
-            ranges.insert(row, row_start..=row_start);
+        let (col_start, col_end) = (self.col.min(other.col), self.col.max(other.col));
+        ranges
+            .entry(row_start)
+            .or_default()
+            .push(col_start..=col_end);
+        ranges.entry(row_end).or_default().push(col_start..=col_end);
+        (row_start + 1..row_end).for_each(|row| {
+            ranges.entry(row).or_default().push(col_start..=col_start);
+            ranges.entry(row).or_default().push(col_end..=col_end);
         });
         ranges
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn height() {
+        let p1 = Point::at(5, 5);
+        let p2 = Point::at(10, 10);
+        assert_eq!(p1.height(p2), 5);
+    }
+    #[test]
+    fn width() {
+        let p1 = Point::at(5, 5);
+        let p2 = Point::at(10, 10);
+        assert_eq!(p1.width(p2), 5);
+    }
+    #[test]
+    fn area() {
+        let p1 = Point::at(5, 5);
+        let p2 = Point::at(10, 10);
+        assert_eq!(p1.area(p2), 25);
+    }
+    #[test]
+    fn perimeter() {
+        let p1 = Point::at(5, 5);
+        let p2 = Point::at(10, 10);
+        let expected = Vec::from([
+            (5, vec![5..=10]),
+            (6, vec![5..=5, 10..=10]),
+            (7, vec![5..=5, 10..=10]),
+            (8, vec![5..=5, 10..=10]),
+            (9, vec![5..=5, 10..=10]),
+            (10, vec![5..=10]),
+        ]);
+        let mut result: Vec<(usize, Vec<RangeInclusive<usize>>)> =
+            p1.perimeter(p2).into_iter().collect();
+        result.sort_by_key(|(k, _)| *k);
+        assert_eq!(result, expected);
     }
 }

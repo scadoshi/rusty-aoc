@@ -34,19 +34,16 @@ pub fn part_02(input: &[Point]) -> Option<usize> {
         .sum();
     let mut rectangles_processed: usize = 0;
     input.for_each_combination(|p1, p2| {
-        if p1
-            .perimeter_ranges(*p2)
-            .iter()
-            .all(|(row, perimeter_range)| {
-                let Some(boundary_ranges) = boundary.get(row) else {
-                    return false;
-                };
-                boundary_ranges.iter().any(|bound_range| {
-                    bound_range.contains(perimeter_range.start())
-                        && bound_range.contains(perimeter_range.end())
-                })
+        if p1.perimeter(*p2).iter().all(|(row, perimeter_ranges)| {
+            let Some(boundary_ranges) = boundary.get(row) else {
+                return false;
+            };
+            boundary_ranges.iter().any(|br| {
+                perimeter_ranges
+                    .iter()
+                    .all(|pr| br.contains(pr.start()) && br.contains(pr.end()))
             })
-        {
+        }) {
             max = max.max(p1.area(*p2));
         }
         rectangles_processed += 1;
