@@ -7,11 +7,17 @@ use crate::{
 };
 
 pub fn part_02(input: &[Point]) -> Option<usize> {
-    let inbound_area = input.in_bounds_area_from_vertices();
+    let in_bounds_area = input.in_bounds_area_from_vertices();
     let mut max = 0;
     input.for_each_combination(|p1, p2| {
+        let Some(area) = p1.area(*p2) else {
+            return;
+        };
+        if area <= max {
+            return;
+        };
         if p1.perimeter(*p2).iter().all(|(row, perimeter_ranges)| {
-            let Some(boundary_ranges) = inbound_area.get(row) else {
+            let Some(boundary_ranges) = in_bounds_area.get(row) else {
                 return false;
             };
             perimeter_ranges.iter().all(|pr| {
@@ -20,9 +26,7 @@ pub fn part_02(input: &[Point]) -> Option<usize> {
                     .any(|br| br.contains(pr.start()) && br.contains(pr.end()))
             })
         }) {
-            if let Some(area) = p1.area(*p2) {
-                max = max.max(area);
-            }
+            max = max.max(area);
         }
     });
     Some(max)
