@@ -1,6 +1,6 @@
-mod boundary;
 mod for_each_combination;
 pub mod get_input;
+mod in_bounds_area;
 pub mod part_01;
 pub mod part_02;
 mod rectangle;

@@ -44,6 +44,23 @@ impl Point {
     pub fn pivoted(self) -> Self {
         Point::at(self.col, self.row)
     }
+
+    pub fn axis_line_to(&self, other: Point) -> Option<Vec<Point>> {
+        let cols_equal = self.col == other.col;
+        let rows_equal = self.row == other.row;
+        if (cols_equal && rows_equal) || (!cols_equal && !rows_equal) {
+            return None;
+        }
+        if cols_equal {
+            let start = self.row.min(other.row);
+            let end = self.row.max(other.row);
+            Some((start..=end).map(|row| Point::at(row, self.col)).collect())
+        } else {
+            let start = self.col.min(other.col);
+            let end = self.col.max(other.col);
+            Some((start..=end).map(|col| Point::at(self.row, col)).collect())
+        }
+    }
 }
 
 impl From<&str> for Point {
@@ -52,5 +69,40 @@ impl From<&str> for Point {
         let (col, row) = value.trim().split_once(',').unwrap();
         let (row, col) = (row.parse::<usize>().unwrap(), col.parse::<usize>().unwrap());
         Point::at(row, col)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    #[test]
+    fn horizontal_axis_line() {
+        let p1 = Point::at(0, 0);
+        let p2 = Point::at(0, 1);
+        let result = p1.axis_line_to(p2);
+        let expected = Some(vec![Point::at(0, 0), Point::at(0, 1)]);
+        assert_eq!(result, expected);
+    }
+    #[test]
+    fn vertical_axis_line() {
+        let p1 = Point::at(0, 0);
+        let p2 = Point::at(1, 0);
+        let result = p1.axis_line_to(p2);
+        let expected = Some(vec![Point::at(0, 0), Point::at(1, 0)]);
+        assert_eq!(result, expected);
+    }
+    #[test]
+    fn axis_line_equality_failure() {
+        let p1 = Point::at(0, 0);
+        let p2 = Point::at(0, 0);
+        let result = p1.axis_line_to(p2);
+        assert_eq!(result, None);
+    }
+    #[test]
+    fn axis_line_inequality_failure() {
+        let p1 = Point::at(0, 0);
+        let p2 = Point::at(1, 1);
+        let result = p1.axis_line_to(p2);
+        assert_eq!(result, None);
     }
 }
