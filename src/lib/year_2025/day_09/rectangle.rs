@@ -2,25 +2,25 @@ use crate::common::grid::Point;
 use std::{collections::HashMap, ops::RangeInclusive};
 
 pub trait OfRectangleWithOtherCorner {
-    fn height(&self, other: Point) -> usize;
-    fn width(&self, other: Point) -> usize;
-    fn area(&self, other: Point) -> usize;
+    fn height(&self, other: Point) -> Option<usize>;
+    fn width(&self, other: Point) -> Option<usize>;
+    fn area(&self, other: Point) -> Option<usize>;
     fn perimeter(&self, other: Point) -> HashMap<usize, Vec<RangeInclusive<usize>>>;
 }
 
 impl OfRectangleWithOtherCorner for Point {
-    fn height(&self, other: Point) -> usize {
-        self.row.abs_diff(other.row)
+    fn height(&self, other: Point) -> Option<usize> {
+        self.row.abs_diff(other.row).checked_add(1)
     }
 
-    fn width(&self, other: Point) -> usize {
-        self.col.abs_diff(other.col)
+    fn width(&self, other: Point) -> Option<usize> {
+        self.col.abs_diff(other.col).checked_add(1)
     }
 
-    fn area(&self, other: Point) -> usize {
-        let height = self.height(other);
-        let width = self.width(other);
-        height * width
+    fn area(&self, other: Point) -> Option<usize> {
+        let height = self.height(other)?;
+        let width = self.width(other)?;
+        height.checked_mul(width)
     }
 
     fn perimeter(&self, other: Point) -> HashMap<usize, Vec<RangeInclusive<usize>>> {
@@ -49,19 +49,19 @@ mod test {
     fn height() {
         let p1 = Point::at(5, 5);
         let p2 = Point::at(10, 10);
-        assert_eq!(p1.height(p2), 5);
+        assert_eq!(p1.height(p2), Some(6));
     }
     #[test]
     fn width() {
         let p1 = Point::at(5, 5);
         let p2 = Point::at(10, 10);
-        assert_eq!(p1.width(p2), 5);
+        assert_eq!(p1.width(p2), Some(6));
     }
     #[test]
     fn area() {
         let p1 = Point::at(5, 5);
         let p2 = Point::at(10, 10);
-        assert_eq!(p1.area(p2), 25);
+        assert_eq!(p1.area(p2), Some(36));
     }
     #[test]
     fn perimeter() {

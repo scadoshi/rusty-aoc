@@ -8,7 +8,9 @@ use crate::{
 pub fn part_01(input: &[Point]) -> Option<usize> {
     let mut max = 0;
     input.for_each_combination(|p1, p2| {
-        max = max.max(p1.area(*p2));
+        if let Some(area) = p1.area(*p2) {
+            max = max.max(area);
+        }
     });
     Some(max)
 }

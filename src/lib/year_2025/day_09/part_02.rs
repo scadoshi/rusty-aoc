@@ -10,7 +10,9 @@ pub fn part_02(input: &[Point]) -> Option<usize> {
     let in_bounds_area = input.in_bounds_area_from_vertices();
     let mut max = 0;
     input.for_each_combination(|p1, p2| {
-        let area = p1.area(*p2);
+        let Some(area) = p1.area(*p2) else {
+            return;
+        };
         if area <= max {
             return;
         };
