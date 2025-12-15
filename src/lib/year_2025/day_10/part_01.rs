@@ -11,7 +11,7 @@ pub fn part_01(input: &[(u16, Vec<u16>, Vec<u16>)]) -> usize {
                         if subset & 1 << i != 0
                             && let Some(button) = buttons.get(i)
                         {
-                            state ^ button
+                            state ^ *button
                         } else {
                             state
                         }

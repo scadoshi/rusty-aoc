@@ -1,14 +1,43 @@
-use std::collections::{HashSet, VecDeque};
+use crate::year_2025::day_10::{
+    click::Click,
+    u12::pack::{ITEM_COUNT_MAX, TryPack, compare::AnySlotsGreaterThan, len::GetPackLen},
+};
+use std::collections::HashSet;
 
 pub fn part_02(input: &[(u16, Vec<u16>, Vec<u16>)]) -> usize {
+    let len = input.len();
     input
         .iter()
-        .filter_map(|line| {
+        .enumerate()
+        .map(|(i, line)| {
+            println!("{}/{} | {:.2}", i, len, i as f32 / len as f32 * 100.0);
             let (_lights, buttons, target) = line;
-            let mut seen = HashSet::<Vec<u16>>::new();
-            let queue = VecDeque::<Vec<u16>>::from([vec![0; target.len()]]);
-
-            Some(0)
+            let mut seen = HashSet::<u128>::new();
+            let mut clicks = 0;
+            let target = target.iter().try_pack().unwrap();
+            let initial = (target.len() as u128) << (ITEM_COUNT_MAX * 12);
+            let mut states = HashSet::<u128>::from([initial]);
+            'main: loop {
+                clicks += 1;
+                let mut added = HashSet::<u128>::new();
+                for state in states.iter() {
+                    for button in buttons {
+                        let updated = state.click(*button);
+                        if seen.contains(&updated) {
+                            continue;
+                        }
+                        if updated == target {
+                            break 'main;
+                        }
+                        if !updated.any_slots_greater_than(target) {
+                            seen.insert(updated.clone());
+                            added.insert(updated);
+                        }
+                    }
+                }
+                states = added;
+            }
+            clicks
         })
         .sum()
 }
