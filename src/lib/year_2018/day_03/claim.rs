@@ -44,70 +44,70 @@ impl From<&str> for Claim {
     }
 }
 
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-//     #[test]
-//     fn to_points_test() {
-//         let claim = Claim {
-//             id: 1,
-//             top_left_corner: Point { row: 3, col: 1 },
-//             dimensions: Dimensions {
-//                 height: 3,
-//                 width: 3,
-//             },
-//         };
-//         let points = vec![
-//             Point { row: 3, col: 1 },
-//             Point { row: 3, col: 2 },
-//             Point { row: 3, col: 3 },
-//             Point { row: 4, col: 1 },
-//             Point { row: 4, col: 2 },
-//             Point { row: 4, col: 3 },
-//             Point { row: 5, col: 1 },
-//             Point { row: 5, col: 2 },
-//             Point { row: 5, col: 3 },
-//         ];
-//         assert_eq!(claim.to_points(), points);
-//     }
-//     #[test]
-//     fn overlaps_with_test_true() {
-//         let claim1 = Claim {
-//             id: 1,
-//             top_left_corner: Point { row: 3, col: 1 },
-//             dimensions: Dimensions {
-//                 height: 4,
-//                 width: 4,
-//             },
-//         };
-//         let claim2 = Claim {
-//             id: 2,
-//             top_left_corner: Point { row: 1, col: 3 },
-//             dimensions: Dimensions {
-//                 height: 4,
-//                 width: 4,
-//             },
-//         };
-//         assert!(claim1.overlaps_with(claim2));
-//     }
-//     #[test]
-//     fn overlaps_with_test_false() {
-//         let claim1 = Claim {
-//             id: 1,
-//             top_left_corner: Point { row: 3, col: 1 },
-//             dimensions: Dimensions {
-//                 height: 4,
-//                 width: 4,
-//             },
-//         };
-//         let claim2 = Claim {
-//             id: 2,
-//             top_left_corner: Point { row: 5, col: 5 },
-//             dimensions: Dimensions {
-//                 height: 2,
-//                 width: 2,
-//             },
-//         };
-//         assert!(!claim1.overlaps_with(claim2));
-//     }
-// }
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn to_points_test() {
+        let claim = Claim {
+            id: 1,
+            top_left_corner: Point { row: 3, col: 1 },
+            dimensions: Dimensions {
+                height: 3,
+                width: 3,
+            },
+        };
+        let points = vec![
+            Point { row: 3, col: 1 },
+            Point { row: 3, col: 2 },
+            Point { row: 3, col: 3 },
+            Point { row: 4, col: 1 },
+            Point { row: 4, col: 2 },
+            Point { row: 4, col: 3 },
+            Point { row: 5, col: 1 },
+            Point { row: 5, col: 2 },
+            Point { row: 5, col: 3 },
+        ];
+        assert_eq!(claim.to_points(), points);
+    }
+    #[test]
+    fn overlaps_with_test_true() {
+        let claim1 = Claim {
+            id: 1,
+            top_left_corner: Point { row: 3, col: 1 },
+            dimensions: Dimensions {
+                height: 4,
+                width: 4,
+            },
+        };
+        let claim2 = Claim {
+            id: 2,
+            top_left_corner: Point { row: 1, col: 3 },
+            dimensions: Dimensions {
+                height: 4,
+                width: 4,
+            },
+        };
+        assert!(claim1.overlaps_with(claim2));
+    }
+    #[test]
+    fn overlaps_with_test_false() {
+        let claim1 = Claim {
+            id: 1,
+            top_left_corner: Point { row: 3, col: 1 },
+            dimensions: Dimensions {
+                height: 4,
+                width: 4,
+            },
+        };
+        let claim2 = Claim {
+            id: 2,
+            top_left_corner: Point { row: 5, col: 5 },
+            dimensions: Dimensions {
+                height: 2,
+                width: 2,
+            },
+        };
+        assert!(!claim1.overlaps_with(claim2));
+    }
+}
