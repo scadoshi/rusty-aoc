@@ -15,7 +15,7 @@ impl Default for SpiralingPoint {
             point: Point::new(),
             direction: Direction::default(),
             value: 1,
-            steps: 0,
+            steps: 1,
         }
     }
 }
