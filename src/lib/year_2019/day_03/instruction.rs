@@ -64,7 +64,7 @@ impl ToWire for WireInstruction {
 }
 
 #[cfg(test)]
-pub mod test {
+pub mod tests {
     use super::*;
     #[test]
     fn instruction_from_str_success_up() {

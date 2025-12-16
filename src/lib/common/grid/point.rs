@@ -73,7 +73,7 @@ impl From<&str> for Point {
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
     #[test]
     fn horizontal_axis_line() {

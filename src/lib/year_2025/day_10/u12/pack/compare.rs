@@ -21,3 +21,27 @@ impl AnySlotsGreaterThan for Pack {
         any_greater_than
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::year_2025::day_10::u12::pack::TryPack;
+    #[test]
+    fn no_slots_greater_than() {
+        let a = [1, 2, 3, 4].iter().try_pack().unwrap();
+        let b = [1, 2, 3, 4].iter().try_pack().unwrap();
+        assert!(!a.any_slots_greater_than(b));
+    }
+    #[test]
+    fn all_slots_greater_than() {
+        let a = [1, 2, 3, 4].iter().try_pack().unwrap();
+        let b = [0, 0, 0, 0].iter().try_pack().unwrap();
+        assert!(a.any_slots_greater_than(b));
+    }
+    #[test]
+    fn one_slot_greater_than() {
+        let a = [1, 2, 3, 4].iter().try_pack().unwrap();
+        let b = [0, 2, 3, 4].iter().try_pack().unwrap();
+        assert!(a.any_slots_greater_than(b));
+    }
+}

@@ -31,7 +31,7 @@ impl MaxJoltage for Bank {
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
     #[test]
     fn test_max_voltage() {

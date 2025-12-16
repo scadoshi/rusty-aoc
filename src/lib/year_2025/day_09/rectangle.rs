@@ -41,7 +41,7 @@ impl OfRectangleWithOtherCorner for Point {
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use std::collections::HashSet;
 
     use super::*;

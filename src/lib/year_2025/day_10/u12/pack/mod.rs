@@ -45,3 +45,52 @@ where
         Ok(output)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::year_2025::day_10::u12::{self, pack::unpack::Unpack};
+    #[test]
+    fn pack_success() {
+        let arr = [1, 2, 3, 4, 5];
+        let packed = arr.iter().try_pack();
+        assert!(packed.is_ok());
+    }
+
+    #[test]
+    fn roundtrip() {
+        let arr = [1, 2, 3, 4, 5];
+        let packed = arr.iter().try_pack().unwrap();
+        let unpacked = packed.unpack();
+        assert_eq!(&unpacked, &arr);
+    }
+
+    #[test]
+    fn single_element() {
+        let arr = [345u16];
+        let packed = arr.iter().try_pack().unwrap();
+        let unpacked = packed.unpack();
+        assert_eq!(&unpacked, &arr);
+    }
+
+    #[test]
+    fn max_slot_value() {
+        let arr = [u12::MAX; 10];
+        let packed = arr.iter().try_pack();
+        assert!(packed.is_ok());
+    }
+
+    #[test]
+    fn overflow_error() {
+        let arr = [4096, 2, 3];
+        let packed = arr.iter().try_pack();
+        assert!(matches!(packed, Err(PackError::ItemOverflow(4096))));
+    }
+
+    #[test]
+    fn over_max_items() {
+        let arr = [1u16; 11];
+        let packed = arr.iter().try_pack();
+        assert!(matches!(packed, Err(PackError::Overflow(10))));
+    }
+}

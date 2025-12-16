@@ -20,6 +20,9 @@ pub fn part_02(input: &[(u16, Vec<u16>, Vec<u16>)]) -> usize {
             'main: loop {
                 clicks += 1;
                 let mut added = HashSet::<u128>::new();
+                println!("===");
+                println!("states: {}", states.len());
+                println!("seen: {}", seen.len());
                 for state in states.iter() {
                     for button in buttons {
                         let updated = state.click(*button);

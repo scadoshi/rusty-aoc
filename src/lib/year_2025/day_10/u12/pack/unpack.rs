@@ -18,11 +18,11 @@ impl Unpack for Pack {
 }
 
 #[cfg(test)]
-mod test {
+mod tests {
     use super::*;
     use crate::year_2025::day_10::u12::pack::TryPack;
     #[test]
-    fn unpack() {
+    fn unpacked_equals_what_was_packed() {
         let input = [1, 2, 3, 4];
         let packed = input.iter().try_pack();
         assert!(packed.is_ok());
