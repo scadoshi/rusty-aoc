@@ -7,6 +7,7 @@ pub const NUM_CHARS: [u8; 10] = [b'0', b'1', b'2', b'3', b'4', b'5', b'6', b'7',
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Room {
+    pub name: String,
     pub value_counts: HashMap<u8, u8>,
     pub id: u32,
     pub checksum: u64,
@@ -14,7 +15,18 @@ pub struct Room {
 
 impl From<Parser> for Room {
     fn from(value: Parser) -> Self {
+        let mut name: String = String::new();
+        let incr = (value.id % 26) as u8;
+        let len = value.encoded_name.len();
+        for b in value.encoded_name.bytes().take(len - 1) {
+            if b == b'-' {
+                name.push('-');
+            } else {
+                name.push((((b - b'a' + incr) % 26) + b'a') as char)
+            }
+        }
         Self {
+            name,
             value_counts: value.value_counts,
             id: value.id,
             checksum: value.checksum,
@@ -33,6 +45,7 @@ impl From<&str> for Room {
                     } else if NUM_CHARS.binary_search(&b).is_ok() {
                         return parser.set_parsing_id().set_id_digit_from_num_char(b);
                     } else {
+                        parser.encoded_name.push(b as char);
                         *parser.value_counts.entry(b).or_default() += 1;
                         parser
                     }
@@ -78,6 +91,7 @@ mod tests {
     fn full_parse() {
         let result = Room::from("aaaaa-bbb-z-y-x-123[abxyz]");
         let expected = Room {
+            name: "hhhhh-iii-g-f-e".to_string(),
             value_counts: HashMap::from([(b'a', 5), (b'b', 3), (b'x', 1), (b'y', 1), (b'z', 1)]),
             id: 123,
             checksum: {

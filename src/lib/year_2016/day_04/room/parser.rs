@@ -10,12 +10,12 @@ enum ParsingWhat {
     Value,
     Id,
     Checksum,
-    None,
 }
 
 #[derive(Debug, Clone, Default)]
 pub struct Parser {
     parsing: ParsingWhat,
+    pub encoded_name: String,
     pub value_counts: HashMap<u8, u8>,
     pub id: u32,
     pub id_pow: u32,
@@ -49,12 +49,6 @@ impl Parser {
     pub fn set_parsing_checksum(self) -> Self {
         Self {
             parsing: ParsingWhat::Checksum,
-            ..self
-        }
-    }
-    pub fn set_parsing_none(self) -> Self {
-        Self {
-            parsing: ParsingWhat::None,
             ..self
         }
     }
