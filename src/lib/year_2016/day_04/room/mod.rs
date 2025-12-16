@@ -41,6 +41,7 @@ impl From<&str> for Room {
             .fold(Parser::new(), |mut parser, b| {
                 if parser.is_parsing_value() {
                     if b == b'-' {
+                        parser.encoded_name.push(b as char);
                         return parser;
                     } else if NUM_CHARS.binary_search(&b).is_ok() {
                         return parser.set_parsing_id().set_id_digit_from_num_char(b);
