@@ -1,7 +1,9 @@
-use crate::year_2016::day_04::room::parser::{BYTE_LEN, NUM_CHARS, Parser};
+pub mod parser;
+
+use crate::year_2016::day_04::room::parser::{BYTE_LEN, Parser};
 use std::collections::HashMap;
 
-pub mod parser;
+pub const NUM_CHARS: [u8; 10] = [b'0', b'1', b'2', b'3', b'4', b'5', b'6', b'7', b'8', b'9'];
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Room {
@@ -24,33 +26,30 @@ impl From<&str> for Room {
     fn from(value: &str) -> Self {
         value
             .bytes()
-            .fold(Parser::new(), |mut state, b| {
-                if state.is_parsing_value() {
+            .fold(Parser::new(), |mut parser, b| {
+                if parser.is_parsing_value() {
                     if b == b'-' {
-                        return state;
+                        return parser;
+                    } else if NUM_CHARS.binary_search(&b).is_ok() {
+                        return parser.set_parsing_id().set_id_digit_from_num_char(b);
+                    } else {
+                        *parser.value_counts.entry(b).or_default() += 1;
+                        parser
                     }
-
-                    if NUM_CHARS.contains(&b) {
-                        return state.set_parsing_id().set_id_digit_from_num_char(b);
-                    }
-
-                    *state.value_counts.entry(b).or_default() += 1;
-                }
-
-                if state.is_parsing_id() {
+                } else if parser.is_parsing_id() {
                     if b == b'[' {
-                        return state.set_parsing_checksum();
+                        return parser.set_parsing_checksum();
+                    } else {
+                        return parser.set_id_digit_from_num_char(b);
                     }
-                    return state.set_id_digit_from_num_char(b);
-                }
-
-                if state.is_parsing_checksum() {
-                    if state.checksum_is_full() {
-                        return state;
+                } else if parser.is_parsing_checksum() {
+                    if parser.checksum_is_full() {
+                        return parser;
                     }
-                    return state.set_checksum_byte(b);
+                    return parser.set_checksum_byte(b);
+                } else {
+                    parser
                 }
-                state.set_parsing_none()
             })
             .into()
     }
@@ -90,16 +89,16 @@ mod tests {
         };
         assert_eq!(result, expected);
     }
-    // #[test]
-    // fn valid_room() {
-    //     let r1 = Room::from("aaaaa-bbb-z-y-x-123[abxyz]");
-    //     let r2 = Room::from("a-b-c-d-e-f-g-h-987[abcde]");
-    //     assert!(r1.is_valid() && r2.is_valid());
-    // }
+    #[test]
+    fn valid_room() {
+        let r1 = Room::from("aaaaa-bbb-z-y-x-123[abxyz]");
+        let r2 = Room::from("a-b-c-d-e-f-g-h-987[abcde]");
+        let r3 = Room::from("not-a-real-room-404[oarel]");
+        assert!(r1.is_valid() && r2.is_valid() && r3.is_valid());
+    }
     #[test]
     fn invalid_room() {
-        let r1 = Room::from("not-a-real-room-404[oarel]");
-        let r2 = Room::from("totally-real-room-200[decoy]");
-        assert!(!r1.is_valid() && !r2.is_valid());
+        let r = Room::from("totally-real-room-200[decoy]");
+        assert!(!r.is_valid());
     }
 }
