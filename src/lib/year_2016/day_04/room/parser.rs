@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-// const ID_LEN: u32 = 3;
+const ID_LEN: u32 = 3;
 pub const CHECKSUM_LEN: u8 = 5;
 pub const BYTE_LEN: u8 = 8;
 
@@ -27,7 +27,7 @@ pub struct Parser {
 impl Parser {
     pub fn new() -> Self {
         Self {
-            id_pow: 2,
+            id_pow: ID_LEN - 1,
             ..Self::default()
         }
     }
