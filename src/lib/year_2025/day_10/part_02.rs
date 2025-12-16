@@ -10,7 +10,6 @@ pub fn part_02(input: &[(u16, Vec<u16>, Vec<u16>)]) -> usize {
         .iter()
         .enumerate()
         .map(|(i, line)| {
-            println!("{}/{} | {:.2}", i, len, i as f32 / len as f32 * 100.0);
             let (_lights, buttons, target) = line;
             let mut seen = HashSet::<u128>::new();
             let mut clicks = 0;
@@ -20,9 +19,40 @@ pub fn part_02(input: &[(u16, Vec<u16>, Vec<u16>)]) -> usize {
             'main: loop {
                 clicks += 1;
                 let mut added = HashSet::<u128>::new();
-                println!("===");
-                println!("states: {}", states.len());
-                println!("seen: {}", seen.len());
+                // ======debug======
+                println!(
+                    "{}/{} completed | {:.2}% done | clicks: {} | states: {} | seen: {}",
+                    i,
+                    len,
+                    i as f32 / len as f32 * 100.0,
+                    clicks,
+                    states
+                        .len()
+                        .to_string()
+                        .chars()
+                        .rev()
+                        .collect::<Vec<_>>()
+                        .chunks(3)
+                        .map(|c| c.iter().collect::<String>())
+                        .collect::<Vec<_>>()
+                        .join(",")
+                        .chars()
+                        .rev()
+                        .collect::<String>(),
+                    seen.len()
+                        .to_string()
+                        .chars()
+                        .rev()
+                        .collect::<Vec<_>>()
+                        .chunks(3)
+                        .map(|c| c.iter().collect::<String>())
+                        .collect::<Vec<_>>()
+                        .join(",")
+                        .chars()
+                        .rev()
+                        .collect::<String>()
+                );
+                // ======debug======
                 for state in states.iter() {
                     for button in buttons {
                         let updated = state.click(*button);
