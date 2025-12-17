@@ -12,7 +12,7 @@ impl Unpack for Pack {
         let len: usize = self.len();
         (0..len)
             .rev()
-            .map(|i| u16::try_from((self >> i * BIT_LEN) & 0xFFF).unwrap())
+            .map(|i| u16::try_from((self >> (i * BIT_LEN)) & 0xFFF).unwrap())
             .collect()
     }
 }

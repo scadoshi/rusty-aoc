@@ -1,8 +1,6 @@
-use std::collections::HashMap;
-
+use crate::year_2018::day_04::event::{Act, Event};
 use chrono::{Duration, Timelike};
-
-use crate::year_2018::day_04::{act::Act, event::Event};
+use std::collections::HashMap;
 
 pub fn part_02(input: &[Event]) -> u32 {
     let guard_minute_map: HashMap<(u32, u32), u32> = input

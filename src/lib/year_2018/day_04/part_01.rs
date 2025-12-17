@@ -1,4 +1,4 @@
-use crate::year_2018::day_04::{act::Act, event::Event};
+use crate::year_2018::day_04::event::{Act, Event};
 use chrono::Timelike;
 use std::collections::HashMap;
 

@@ -27,10 +27,10 @@ where
     U: Deref<Target = u16>,
 {
     fn try_pack(self) -> Result<Pack, PackError> {
-        let mut iter = self.into_iter().rev().enumerate();
+        let iter = self.into_iter().rev().enumerate();
         let mut output = 0;
         let mut len = 0;
-        while let Some((i, num)) = iter.next() {
+        for (i, num) in iter {
             len += 1;
             let u12_result = U12::try_from(*num);
             if u12_result.is_err() {
@@ -39,9 +39,9 @@ where
             if i > ITEM_COUNT_MAX - 1 {
                 return Err(PackError::Overflow(i));
             }
-            output = output | (Pack::from(*num) << i * BIT_LEN);
+            output |= Pack::from(*num) << (i * BIT_LEN);
         }
-        output = output | (len << ITEM_COUNT_MAX * BIT_LEN);
+        output |= len << (ITEM_COUNT_MAX * BIT_LEN);
         Ok(output)
     }
 }

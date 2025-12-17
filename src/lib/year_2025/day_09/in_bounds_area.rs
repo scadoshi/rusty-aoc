@@ -18,7 +18,7 @@ impl InBoundsAreaFromVertices for &[Point] {
             row_bound = row_bound.max(p1.row).max(p2.row);
             col_bound = col_bound.max(p1.col).max(p2.col);
             if let Some(line) = p1.axis_line_to(*p2) {
-                lines.extend(line.into_iter());
+                lines.extend(line);
             }
             lines
         });

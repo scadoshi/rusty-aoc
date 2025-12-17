@@ -1,8 +1,13 @@
-use crate::year_2018::day_04::act::Act;
 use chrono::NaiveDateTime;
 
 #[derive(Debug, PartialEq)]
-#[allow(dead_code)]
+pub enum Act {
+    Begin,
+    Sleep,
+    Wake,
+}
+
+#[derive(Debug, PartialEq)]
 pub struct Event {
     pub guard_id: Option<u32>,
     pub act: Option<Act>,
@@ -12,7 +17,6 @@ pub struct Event {
 }
 
 impl Event {
-    #[allow(dead_code)]
     pub fn new(
         guard_id: Option<u32>,
         act: Option<Act>,

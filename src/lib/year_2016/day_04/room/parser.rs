@@ -43,8 +43,8 @@ impl Parser {
         if self.checksum_index == CHECKSUM_LEN {
             return self;
         }
-        self.checksum = self.checksum | u64::from(value) << (self.checksum_index * BYTE_LEN);
-        self.checksum_index = self.checksum_index + 1;
+        self.checksum |= u64::from(value) << (self.checksum_index * BYTE_LEN);
+        self.checksum_index += 1;
         self
     }
     pub fn checksum_is_full(&self) -> bool {

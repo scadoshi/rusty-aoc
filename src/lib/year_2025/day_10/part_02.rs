@@ -63,7 +63,7 @@ pub fn part_02(input: &[(u16, Vec<u16>, Vec<u16>)]) -> usize {
                             break 'main;
                         }
                         if !updated.any_slots_greater_than(target) {
-                            seen.insert(updated.clone());
+                            seen.insert(updated);
                             added.insert(updated);
                         }
                     }

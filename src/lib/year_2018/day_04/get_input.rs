@@ -1,6 +1,6 @@
 use chrono::NaiveDateTime;
 
-use crate::year_2018::day_04::{act::Act, event::Event};
+use crate::year_2018::day_04::event::{Act, Event};
 
 pub fn get_input() -> Vec<Event> {
     let mut eventlog: Vec<Event> = include_str!("input.txt")
@@ -9,17 +9,15 @@ pub fn get_input() -> Vec<Event> {
             // guard_id
             let mut guard_id: Option<u32> = None;
             if let (Some(i), Some(j)) = (line.find("Guard #"), line.find(" begins shift")) {
-                guard_id = Some(line[i + 7..j].parse::<u32>().expect(
-                    format!("cannot convert {} to u32", line[i + 7..j].to_string()).as_str(),
-                ));
+                guard_id = Some(line[i + 7..j].parse::<u32>().unwrap());
             }
 
             // act
-            let act = if line.contains(&"begin") {
+            let act = if line.contains("begin") {
                 Some(Act::Begin)
-            } else if line.contains(&"sleep") {
+            } else if line.contains("sleep") {
                 Some(Act::Sleep)
-            } else if line.contains(&"wake") {
+            } else if line.contains("wake") {
                 Some(Act::Wake)
             } else {
                 None
@@ -31,7 +29,7 @@ pub fn get_input() -> Vec<Event> {
                     &line[line.find("[").unwrap() + 1..line.find("]").unwrap()],
                     "%Y-%m-%d %H:%M",
                 )
-                .expect("cannot convert to NaiveDateTime"),
+                .unwrap(),
             );
 
             // end

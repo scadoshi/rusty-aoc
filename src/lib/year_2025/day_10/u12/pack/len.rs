@@ -2,6 +2,7 @@ use crate::year_2025::day_10::u12::{BIT_LEN, pack::ITEM_COUNT_MAX, pack::Pack};
 
 pub trait GetPackLen {
     fn len(&self) -> usize;
+    fn is_empty(&self) -> bool;
 }
 
 impl GetPackLen for Pack {
@@ -9,6 +10,9 @@ impl GetPackLen for Pack {
         ((self >> (ITEM_COUNT_MAX * BIT_LEN)) & 0xFFF)
             .try_into()
             .expect("enforced max len 10 ensures safety")
+    }
+    fn is_empty(&self) -> bool {
+        self.len() == 0
     }
 }
 

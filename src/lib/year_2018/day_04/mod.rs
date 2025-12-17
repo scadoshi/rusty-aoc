@@ -1,4 +1,3 @@
-mod act;
 mod event;
 pub mod get_input;
 pub mod part_01;
