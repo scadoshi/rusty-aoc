@@ -1,9 +1,7 @@
 pub mod parser;
 
-use crate::year_2016::day_04::room::parser::{BYTE_LEN, Parser};
+use crate::year_2016::day_04::room::parser::{BYTE_LEN, IsParsing, Parser};
 use std::collections::HashMap;
-
-pub const NUM_CHARS: [u8; 10] = [b'0', b'1', b'2', b'3', b'4', b'5', b'6', b'7', b'8', b'9'];
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Room {
@@ -38,30 +36,30 @@ impl From<&str> for Room {
     fn from(value: &str) -> Self {
         value
             .bytes()
-            .fold(Parser::new(), |mut parser, b| {
-                if parser.is_parsing_value() {
+            .fold(Parser::new(), |mut parser, b| match parser.is_parsing {
+                IsParsing::Value => {
                     if b == b'-' {
                         parser.encoded_name.push(b as char);
-                        return parser;
-                    } else if NUM_CHARS.binary_search(&b).is_ok() {
-                        return parser.set_parsing_id().set_id_digit_from_num_char(b);
+                    } else if b.is_ascii_digit() {
+                        parser.set_parsing_id().set_id_digit(b);
                     } else {
                         parser.encoded_name.push(b as char);
                         *parser.value_counts.entry(b).or_default() += 1;
-                        parser
                     }
-                } else if parser.is_parsing_id() {
+                    parser
+                }
+                IsParsing::Id => {
                     if b == b'[' {
-                        return parser.set_parsing_checksum();
+                        parser.set_parsing_checksum();
                     } else {
-                        return parser.set_id_digit_from_num_char(b);
+                        parser.set_id_digit(b);
                     }
-                } else if parser.is_parsing_checksum() {
-                    if parser.checksum_is_full() {
-                        return parser;
+                    parser
+                }
+                IsParsing::Checksum => {
+                    if !parser.checksum_is_full() {
+                        parser.set_checksum_byte(b);
                     }
-                    return parser.set_checksum_byte(b);
-                } else {
                     parser
                 }
             })
