@@ -15,7 +15,7 @@ pub enum IsParsing {
 pub struct Parser {
     pub is_parsing: IsParsing,
     pub encoded_name: String,
-    pub value_counts: HashMap<u8, u8>,
+    pub counts: HashMap<u8, u8>,
     pub id: u32,
     pub checksum: u64,
     pub checksum_index: u8,

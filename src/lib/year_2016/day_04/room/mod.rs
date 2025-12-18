@@ -5,27 +5,17 @@ use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Room {
-    pub name: String,
-    pub value_counts: HashMap<u8, u8>,
+    pub encoded_name: String,
+    pub counts: HashMap<u8, u8>,
     pub id: u32,
     pub checksum: u64,
 }
 
 impl From<Parser> for Room {
     fn from(value: Parser) -> Self {
-        let mut name: String = String::new();
-        let incr = (value.id % 26) as u8;
-        let len = value.encoded_name.len();
-        for b in value.encoded_name.bytes().take(len - 1) {
-            if b == b'-' {
-                name.push('-');
-            } else {
-                name.push((((b - b'a' + incr) % 26) + b'a') as char)
-            }
-        }
         Self {
-            name,
-            value_counts: value.value_counts,
+            encoded_name: value.encoded_name,
+            counts: value.counts,
             id: value.id,
             checksum: value.checksum,
         }
@@ -44,7 +34,7 @@ impl From<&str> for Room {
                         parser.set_parsing_id().set_id_digit(b);
                     } else {
                         parser.encoded_name.push(b as char);
-                        *parser.value_counts.entry(b).or_default() += 1;
+                        *parser.counts.entry(b).or_default() += 1;
                     }
                     parser
                 }
@@ -69,16 +59,30 @@ impl From<&str> for Room {
 
 impl Room {
     pub fn is_valid(&self) -> bool {
-        let mut v: Vec<(&u8, &u8)> = self.value_counts.iter().collect();
+        let mut v: Vec<(&u8, &u8)> = self.counts.iter().collect();
         v.sort_by(|(ch1, co1), (ch2, co2)| co2.cmp(co1).then(ch1.cmp(ch2)));
-        let generated_checksum: u64 = v
+        let true_checksum: u64 = v
             .into_iter()
             .take(5)
             .enumerate()
             .fold(0u64, |acc, (i, (b, _))| {
                 acc | u64::from(*b) << (i * BYTE_LEN as usize)
             });
-        generated_checksum == self.checksum
+        true_checksum == self.checksum
+    }
+
+    pub fn decode_name(&self) -> String {
+        let mut name: String = String::new();
+        let incr = (self.id % 26) as u8;
+        let len = self.encoded_name.len();
+        for b in self.encoded_name.bytes().take(len - 1) {
+            if b == b'-' {
+                name.push('-');
+            } else {
+                name.push((((b - b'a' + incr) % 26) + b'a') as char)
+            }
+        }
+        name
     }
 }
 
@@ -90,8 +94,8 @@ mod tests {
     fn full_parse() {
         let result = Room::from("aaaaa-bbb-z-y-x-123[abxyz]");
         let expected = Room {
-            name: "hhhhh-iii-g-f-e".to_string(),
-            value_counts: HashMap::from([(b'a', 5), (b'b', 3), (b'x', 1), (b'y', 1), (b'z', 1)]),
+            encoded_name: "hhhhh-iii-g-f-e".to_string(),
+            counts: HashMap::from([(b'a', 5), (b'b', 3), (b'x', 1), (b'y', 1), (b'z', 1)]),
             id: 123,
             checksum: {
                 let value = [b'a', b'b', b'x', b'y', b'z'];

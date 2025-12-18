@@ -1,3 +1,5 @@
-pub fn get_input() -> Vec<&'static str> {
-    include_str!("input.txt").lines().collect()
+use crate::year_2016::day_04::room::Room;
+
+pub fn get_input() -> Vec<Room> {
+    include_str!("input.txt").lines().map(Room::from).collect()
 }
