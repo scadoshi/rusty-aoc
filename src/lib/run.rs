@@ -13,13 +13,27 @@ where
     R: Debug,
 {
     fn run(self, input: I) {
-        println!("---\n\n# Results");
+        println!("# Functions");
         self.into_iter().for_each(|(name, fun)| {
             let start = Instant::now();
             let result = fun(input.clone());
-            println!(" - {}: {:?} | runtime: {:?}", name, result, start.elapsed());
+            println!(" - {}: {:?} ({:?})", name, result, start.elapsed());
         });
-        println!("\n---");
+    }
+}
+
+impl<I, R> Run<I, R> for [(String, Box<dyn Fn(I) -> R>); 2]
+where
+    I: Clone,
+    R: Debug,
+{
+    fn run(self, input: I) {
+        println!("# Functions");
+        self.into_iter().for_each(|(name, fun)| {
+            let start = Instant::now();
+            let result = fun(input.clone());
+            println!(" - {}: {:?} ({:?})", name, result, start.elapsed());
+        });
     }
 }
 
