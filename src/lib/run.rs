@@ -1,18 +1,19 @@
 use std::{fmt::Debug, time::Instant};
 
-pub trait Run<I, R> {
-    fn run(self, input: I)
+pub trait Run<In, R> {
+    fn run(self, input: In)
     where
-        I: Clone,
+        In: Clone,
         R: Debug;
 }
 
-impl<I, R> Run<I, R> for Vec<(String, Box<dyn Fn(I) -> R>)>
+impl<I, In, R> Run<In, R> for I
 where
-    I: Clone,
+    I: IntoIterator<Item = (&'static str, Box<dyn Fn(In) -> R>)>,
+    In: Clone,
     R: Debug,
 {
-    fn run(self, input: I) {
+    fn run(self, input: In) {
         println!("# Functions");
         self.into_iter().for_each(|(name, fun)| {
             let start = Instant::now();
@@ -22,24 +23,9 @@ where
     }
 }
 
-impl<I, R> Run<I, R> for [(String, Box<dyn Fn(I) -> R>); 2]
-where
-    I: Clone,
-    R: Debug,
-{
-    fn run(self, input: I) {
-        println!("# Functions");
-        self.into_iter().for_each(|(name, fun)| {
-            let start = Instant::now();
-            let result = fun(input.clone());
-            println!(" - {}: {:?} ({:?})", name, result, start.elapsed());
-        });
-    }
-}
-
-pub fn funbox<I, R, F>(name: &str, fun: F) -> (String, Box<dyn Fn(I) -> R>)
+pub fn funbox<I, R, F>(name: &'static str, fun: F) -> (&'static str, Box<dyn Fn(I) -> R>)
 where
     F: Fn(I) -> R + 'static,
 {
-    (name.to_string(), Box::new(fun))
+    (name, Box::new(fun))
 }
