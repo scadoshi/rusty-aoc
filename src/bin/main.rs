@@ -1,6 +1,6 @@
 use aoc::{
     run::{funbox, Run},
-    year_2015::day_05::*,
+    year_2020::day_04::*,
 };
 
 pub fn main() {
