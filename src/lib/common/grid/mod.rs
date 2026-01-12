@@ -175,6 +175,10 @@ impl<T> Grid<T> {
     pub fn iter(&self) -> std::slice::Iter<'_, Vec<T>> {
         self.rows.iter()
     }
+
+    pub fn iter_mut(&mut self) -> std::slice::IterMut<'_, Vec<T>> {
+        self.rows.iter_mut()
+    }
 }
 
 impl<I, T> FromIterator<I> for Grid<T>
