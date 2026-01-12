@@ -8,7 +8,7 @@ impl CollisionsAtSlope for Grid<char> {
     fn collisions_at_slope<const R: usize, const C: usize>(&self) -> usize {
         let mut point = Point::new();
         let mut total = 0;
-        while point.row < self.values.len() {
+        while point.row < self.rows.len() {
             if let Some(value) = self.get_value_at_point(point)
                 && *value == '#'
             {

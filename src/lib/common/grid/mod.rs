@@ -9,7 +9,7 @@ use std::{
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Grid<T> {
-    pub values: Vec<Vec<T>>,
+    pub rows: Vec<Vec<T>>,
 }
 
 impl<T: PartialEq> Grid<T> {
@@ -22,11 +22,11 @@ impl<T: PartialEq> Grid<T> {
 
 impl<T: Clone> Grid<T> {
     pub fn to_points_with_values(&self) -> Vec<(Point, T)> {
-        (0..self.values.len())
+        (0..self.rows.len())
             .flat_map(|row| {
-                (0..self.values.get(row).unwrap().len())
+                (0..self.rows.get(row).unwrap().len())
                     .map(|col| {
-                        let value = self.values.get(row).unwrap().get(col).unwrap();
+                        let value = self.rows.get(row).unwrap().get(col).unwrap();
                         (Point { row, col }, value.clone())
                     })
                     .collect::<Vec<(Point, T)>>()
@@ -57,7 +57,7 @@ impl<T: Clone> Grid<T> {
 impl<T: Display> Grid<T> {
     pub fn write_to(&self, file: &mut File) -> anyhow::Result<()> {
         let (max_row, Some(max_col)) = (self.len(), self.max_row_len()) else {
-            return Err(anyhow!("grid must have rows; rows must have values"));
+            return Err(anyhow!("grid must have rows; rows must have rows"));
         };
         let max_row_digit_count = max_row.to_string().len();
         let display = self
@@ -111,58 +111,58 @@ impl<T: Default> Grid<T> {
 
 impl<T> Grid<T> {
     pub fn len(&self) -> usize {
-        self.values.len()
+        self.rows.len()
     }
 
     pub fn is_empty(&self) -> bool {
-        self.values.iter().all(|row| row.is_empty())
+        self.rows.iter().all(|row| row.is_empty())
     }
 
     pub fn max_row_len(&self) -> Option<usize> {
-        self.values.iter().map(|row| row.len()).max()
+        self.rows.iter().map(|row| row.len()).max()
     }
 
     pub fn first_row_len(&self) -> Option<usize> {
-        self.values.first().map(|r| r.len())
+        self.rows.first().map(|r| r.len())
     }
 
     pub fn last_row_len(&self) -> Option<usize> {
-        self.values.iter().next_back().map(|r| r.len())
+        self.rows.iter().next_back().map(|r| r.len())
     }
 
     pub fn is_square(&self) -> bool {
         let len = self.len();
-        self.values.iter().all(|row| row.len() == len)
+        self.rows.iter().all(|row| row.len() == len)
     }
 
     pub fn is_rectangular(&self) -> bool {
         self.first_row_len()
-            .is_some_and(|first_row_len| self.values.iter().all(|row| row.len() == first_row_len))
+            .is_some_and(|first_row_len| self.rows.iter().all(|row| row.len() == first_row_len))
     }
 
     pub fn to_points(&self) -> Vec<Point> {
-        (0..self.values.len())
+        (0..self.rows.len())
             .flat_map(|row| {
-                (0..self.values.get(row).unwrap().len()).map(move |col| Point::at(row, col))
+                (0..self.rows.get(row).unwrap().len()).map(move |col| Point::at(row, col))
             })
             .collect()
     }
 
     pub fn rows(&self) -> &[Vec<T>] {
-        self.values.as_slice()
+        self.rows.as_slice()
     }
 
     pub fn get_row(&self, index: usize) -> Option<&[T]> {
-        self.values.get(index).map(|row| row.as_slice())
+        self.rows.get(index).map(|row| row.as_slice())
     }
 
     pub fn get_value_at_point(&self, point: Point) -> Option<&T> {
-        let row = self.values.get(point.row)?;
+        let row = self.rows.get(point.row)?;
         row.get(point.col)
     }
 
     pub fn set_value_at_point(&mut self, value: T, point: Point) -> bool {
-        let Some(row) = self.values.get_mut(point.row) else {
+        let Some(row) = self.rows.get_mut(point.row) else {
             return false;
         };
         if let Some(cell) = row.get_mut(point.col) {
@@ -173,7 +173,7 @@ impl<T> Grid<T> {
     }
 
     pub fn iter(&self) -> std::slice::Iter<'_, Vec<T>> {
-        self.values.iter()
+        self.rows.iter()
     }
 }
 
@@ -183,7 +183,7 @@ where
 {
     fn from_iter<O: IntoIterator<Item = I>>(iter: O) -> Self {
         Grid {
-            values: iter
+            rows: iter
                 .into_iter()
                 .map(|i| i.into_iter().collect::<Vec<T>>())
                 .collect(),
@@ -196,6 +196,6 @@ impl<T> IntoIterator for Grid<T> {
     type IntoIter = std::vec::IntoIter<Self::Item>;
 
     fn into_iter(self) -> Self::IntoIter {
-        self.values.into_iter()
+        self.rows.into_iter()
     }
 }
