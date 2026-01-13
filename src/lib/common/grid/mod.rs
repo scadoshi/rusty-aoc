@@ -172,6 +172,12 @@ impl<T> Grid<T> {
         false
     }
 
+    pub fn get_mut_at_point(&mut self, point: Point) -> Option<&mut T> {
+        self.rows
+            .get_mut(point.row)
+            .and_then(|row| row.get_mut(point.col))
+    }
+
     pub fn iter(&self) -> std::slice::Iter<'_, Vec<T>> {
         self.rows.iter()
     }
