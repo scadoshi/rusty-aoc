@@ -75,8 +75,7 @@ impl Room {
     pub fn decode_name(&self) -> String {
         let mut name: String = String::new();
         let incr = (self.id % 26) as u8;
-        let len = self.encoded_name.len();
-        for b in self.encoded_name.bytes().take(len - 1) {
+        for b in self.encoded_name.bytes() {
             if b == b'-' {
                 name.push('-');
             } else {
