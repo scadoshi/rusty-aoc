@@ -1,6 +1,6 @@
 pub mod parser;
 
-use crate::year_2016::day_04::room::parser::{BYTE_LEN, IsParsing, Parser};
+use crate::year_2016::day_04::room::parser::{IsParsing, Parser, BYTE_LEN};
 use std::collections::HashMap;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -32,6 +32,7 @@ impl From<&str> for Room {
                         parser.encoded_name.push(b as char);
                     } else if b.is_ascii_digit() {
                         parser.set_parsing_id().set_id_digit(b);
+                        parser.encoded_name = parser.encoded_name.trim_end_matches('-').to_string();
                     } else {
                         parser.encoded_name.push(b as char);
                         *parser.counts.entry(b).or_default() += 1;
@@ -94,13 +95,13 @@ mod tests {
     fn full_parse() {
         let result = Room::from("aaaaa-bbb-z-y-x-123[abxyz]");
         let expected = Room {
-            encoded_name: "hhhhh-iii-g-f-e".to_string(),
+            encoded_name: "aaaaa-bbb-z-y-x".to_string(),
             counts: HashMap::from([(b'a', 5), (b'b', 3), (b'x', 1), (b'y', 1), (b'z', 1)]),
             id: 123,
             checksum: {
                 let value = [b'a', b'b', b'x', b'y', b'z'];
                 (0..CHECKSUM_LEN).fold(0u64, |acc, i| {
-                    acc | (u64::from(value[i as usize]) << i * BYTE_LEN)
+                    acc | (u64::from(value[i as usize]) << (i * BYTE_LEN))
                 })
             },
         };
