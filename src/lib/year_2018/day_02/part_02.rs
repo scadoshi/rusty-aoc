@@ -1,13 +1,9 @@
-fn difference_count(string1: &str, string2: &str) -> i32 {
+fn difference_count(string1: &str, string2: &str) -> usize {
     string1
         .chars()
         .zip(string2.chars())
-        .fold(0, |mut difference_count, (char1, char2)| {
-            if char1 != char2 {
-                difference_count += 1
-            }
-            difference_count
-        })
+        .filter(|(char1, char2)| char1 != char2)
+        .count()
 }
 
 fn find_two_strings_with_single_char_difference(input: &[String]) -> Option<(String, String)> {
