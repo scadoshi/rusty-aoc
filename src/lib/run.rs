@@ -1,22 +1,20 @@
-use std::{fmt::Debug, time::Instant};
-
 pub trait Run<In, R> {
     fn run(self, input: In)
     where
         In: Clone,
-        R: Debug;
+        R: std::fmt::Debug;
 }
 
 impl<I, In, R> Run<In, R> for I
 where
     I: IntoIterator<Item = (&'static str, Box<dyn Fn(In) -> R>)>,
     In: Clone,
-    R: Debug,
+    R: std::fmt::Debug,
 {
     fn run(self, input: In) {
         println!("# Functions");
         self.into_iter().for_each(|(name, fun)| {
-            let start = Instant::now();
+            let start = std::time::Instant::now();
             let result = fun(input.clone());
             println!(" - {}: {:?} ({:?})", name, result, start.elapsed());
         });
