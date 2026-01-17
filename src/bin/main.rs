@@ -1,6 +1,6 @@
 use aoc::{
     run::{funbox, Run},
-    year_2023::day_04::*,
+    year_2016::day_05::*,
 };
 
 pub fn main() {
@@ -8,6 +8,6 @@ pub fn main() {
     let input = get_input();
     println!("# Input parsing: {:?}", start.elapsed());
     let functions = [funbox("Part 01", part_01), funbox("Part 02", part_02)];
-    functions.run(&input);
+    functions.run(input);
     println!("# Total runtime: {:?}\n", start.elapsed());
 }
