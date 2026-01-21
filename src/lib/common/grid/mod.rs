@@ -109,11 +109,20 @@ impl<T: Default> Grid<T> {
     }
 }
 
-impl<T> Grid<T> {
-    pub fn len(&self) -> usize {
-        self.rows.len()
+impl<T> std::ops::Deref for Grid<T> {
+    type Target = [Vec<T>];
+    fn deref(&self) -> &Self::Target {
+        &self.rows
     }
+}
 
+impl<T> std::ops::DerefMut for Grid<T> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.rows
+    }
+}
+
+impl<T> Grid<T> {
     pub fn is_empty(&self) -> bool {
         self.rows.iter().all(|row| row.is_empty())
     }
@@ -148,10 +157,6 @@ impl<T> Grid<T> {
             .collect()
     }
 
-    pub fn rows(&self) -> &[Vec<T>] {
-        self.rows.as_slice()
-    }
-
     pub fn get_row(&self, index: usize) -> Option<&[T]> {
         self.rows.get(index).map(|row| row.as_slice())
     }
@@ -176,14 +181,6 @@ impl<T> Grid<T> {
         self.rows
             .get_mut(point.row)
             .and_then(|row| row.get_mut(point.col))
-    }
-
-    pub fn iter(&self) -> std::slice::Iter<'_, Vec<T>> {
-        self.rows.iter()
-    }
-
-    pub fn iter_mut(&mut self) -> std::slice::IterMut<'_, Vec<T>> {
-        self.rows.iter_mut()
     }
 }
 
